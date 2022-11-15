@@ -50,6 +50,7 @@ void ConfigureMiddleware(IApplicationBuilder app, IWebHostEnvironment env)
 {
     if (env.IsDevelopment())
     {
+        app.EnsureDbExists();
         app.UseSwagger();
         app.UseSwaggerUI();
     }

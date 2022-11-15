@@ -19,14 +19,14 @@ internal class WorkflowManagerBuilder : IWorkflowManagerBuilder
         where TWorkflowStore : IWorkflowStore<TWorkflow>
         where TWorkflow : IWorkflow
     {
-        services.TryAddScoped(typeof(IWorkflowStore<TWorkflow>), typeof(TWorkflowStore));
+        services.TryAddScoped(typeof(IWorkflowStore<IWorkflow>), typeof(TWorkflowStore));
 
         return this;
     }
 
     public IWorkflowManagerBuilder AddWorkflowStepStore<TWorkflowStepStore, TWorkflowStep>() where TWorkflowStepStore : IWorkflowStepStore<TWorkflowStep> where TWorkflowStep : IWorkflowStep
     {
-        services.TryAddScoped(typeof(IWorkflowStepStore<TWorkflowStep>), typeof(TWorkflowStepStore));
+        services.TryAddScoped(typeof(IWorkflowStepStore<IWorkflowStep>), typeof(TWorkflowStepStore));
 
         return this;
     }
