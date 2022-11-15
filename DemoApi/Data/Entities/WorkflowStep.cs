@@ -1,8 +1,12 @@
-﻿namespace Stio.WorkflowManager.Store.Entity;
+﻿using Stio.WorkflowManager.Store.Entity;
 
-public class WorkflowStep
+namespace Stio.WorkflowManager.DemoApi.Data.Entities;
+
+public class WorkflowStep : IWorkflowStep
 {
     public Guid Id { get; set; }
+
+    public Workflow? Workflow { get; set; }
 
     public Guid WorkflowId { get; set; }
 

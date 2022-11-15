@@ -3,7 +3,7 @@
 namespace Stio.WorkflowManager.Store.Repository;
 
 public interface IWorkflowStepStore<TWorkflowStep>
-    where TWorkflowStep : WorkflowStep
+    where TWorkflowStep : IWorkflowStep
 {
     Task<TWorkflowStep> Create(TWorkflowStep workflowStep);
 
@@ -12,8 +12,4 @@ public interface IWorkflowStepStore<TWorkflowStep>
     Task<TWorkflowStep[]> UpdateRange(TWorkflowStep[] workflowSteps);
 
     Task<TWorkflowStep[]> ListStepsByWorkflowId(Guid workflowId);
-}
-
-public interface IWorkflowStepStore : IWorkflowStepStore<WorkflowStep>
-{
 }

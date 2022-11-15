@@ -1,18 +1,19 @@
 ﻿using Stio.WorkflowManager.Core.Exceptions;
 using Stio.WorkflowManager.Core.Interfaces;
+using Stio.WorkflowManager.Store.Entity;
 using Stio.WorkflowManager.Store.Repository;
 
 namespace Stio.WorkflowManager.Core;
 
 internal class WorkflowManagerFactory : IWorkflowManagerFactory
 {
-    private readonly IWorkflowStore workflowStore;
-    private readonly IWorkflowStepStore workflowStepStore;
+    private readonly IWorkflowStore<IWorkflow> workflowStore;
+    private readonly IWorkflowStepStore<IWorkflowStep> workflowStepStore;
     private readonly IServiceProvider services;
 
     public WorkflowManagerFactory(
-        IWorkflowStore workflowStore,
-        IWorkflowStepStore workflowStepStore,
+        IWorkflowStore<IWorkflow> workflowStore,
+        IWorkflowStepStore<IWorkflowStep> workflowStepStore,
         IServiceProvider services)
     {
         this.workflowStore = workflowStore;

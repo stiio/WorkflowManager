@@ -6,10 +6,12 @@ namespace Stio.WorkflowManager.Core;
 
 public static class ConfigureServices
 {
-    public static void AddWorkflowManager(this IServiceCollection services, Type stepsAssemblyMarkerType)
+    public static IWorkflowManagerBuilder AddWorkflowManager(this IServiceCollection services, Type stepsAssemblyMarkerType)
     {
         WorkflowManagerOptions.TargetAssembly = stepsAssemblyMarkerType.Assembly;
 
         services.AddScoped<IWorkflowManagerFactory, WorkflowManagerFactory>();
+
+        return new WorkflowManagerBuilder(services);
     }
 }

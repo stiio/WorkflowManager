@@ -11,11 +11,11 @@ public abstract class BaseStep
 
     protected internal WorkflowManager WorkflowManager { get; set; } = null!;
 
-    protected internal WorkflowStep WorkflowStep { get; set; } = null!;
+    protected internal IWorkflowStep WorkflowStep { get; set; } = null!;
 
-    public abstract object? GetStepData();
+    public abstract Task<object?> GetStepData();
 
-    internal static void InitStep(BaseStep step, WorkflowManager workflowManager, WorkflowStep workflowStep, StepKey stepKey, StepKey? previousStepKey)
+    internal static void InitStep(BaseStep step, WorkflowManager workflowManager, IWorkflowStep workflowStep, StepKey stepKey, StepKey? previousStepKey)
     {
         step.WorkflowManager = workflowManager;
         step.WorkflowStep = workflowStep;
@@ -23,7 +23,7 @@ public abstract class BaseStep
         step.PreviousStepKey = stepKey;
     }
 
-    internal virtual WorkflowStep UpdateWorkflowStep()
+    internal virtual IWorkflowStep UpdateWorkflowStep()
     {
         this.WorkflowStep.SetStepKey(this.StepKey);
         this.WorkflowStep.SetPreviousStepKey(this.PreviousStepKey);
@@ -37,7 +37,7 @@ public abstract class BaseStep<TData> : BaseStep
 {
     public TData? Data { get; set; }
 
-    internal override WorkflowStep UpdateWorkflowStep()
+    internal override IWorkflowStep UpdateWorkflowStep()
     {
         base.UpdateWorkflowStep();
 
@@ -53,7 +53,7 @@ public abstract class BaseStep<TData, TPayload> : BaseStep<TData>
 {
     public TPayload? Payload;
 
-    internal override WorkflowStep UpdateWorkflowStep()
+    internal override IWorkflowStep UpdateWorkflowStep()
     {
         base.UpdateWorkflowStep();
 

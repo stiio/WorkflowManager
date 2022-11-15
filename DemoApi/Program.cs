@@ -1,26 +1,64 @@
+using Microsoft.EntityFrameworkCore;
 using Stio.WorkflowManager.Core;
-using Stio.WorkflowManager.Core.Interfaces;
-using Stio.WorkflowManager.Store.Entity;
+using Stio.WorkflowManager.DemoApi.Data;
+using Stio.WorkflowManager.DemoApi.Data.Entities;
+using Stio.WorkflowManager.DemoApi.Services;
+using Stio.WorkflowManager.DemoApi.WorkflowManager.Store;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+ConfigureConfiguration(builder.Configuration, builder.Environment);
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+ConfigureServices(builder.Services, builder.Configuration);
 
-var app = builder.Build();
+var webApplication = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+ConfigureMiddleware(webApplication, webApplication.Environment);
+
+ConfigureEndpoints(webApplication);
+
+webApplication.Run();
+
+void ConfigureConfiguration(ConfigurationManager configuration, IWebHostEnvironment env)
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    configuration.AddJsonFile("appsettings.json", false, true) // load base settings
+        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true) // load environment settings
+        .AddJsonFile("appsettings.local.json", true, true) // load local settings
+        .AddEnvironmentVariables();
 }
 
-app.UseHttpsRedirection();
-app.UseAuthorization();
-app.MapControllers();
-app.Run();
+void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+{
+    services.AddDbContext<ApplicationDbContext>(opts =>
+    {
+        opts.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+    });
+
+    services.AddWorkflowManager(typeof(Program))
+        .AddWorkflowStore<WorkflowStore, Workflow>()
+        .AddWorkflowStepStore<WorkflowStepStore, WorkflowStep>();
+
+    services.AddScoped<UserService>();
+
+    services.AddControllers();
+    services.AddEndpointsApiExplorer();
+    services.AddSwaggerGen();
+    services.AddHttpContextAccessor();
+}
+
+void ConfigureMiddleware(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    if (env.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseHttpsRedirection();
+    app.UseAuthorization();
+}
+
+void ConfigureEndpoints(IEndpointRouteBuilder app)
+{
+    app.MapControllers();
+}

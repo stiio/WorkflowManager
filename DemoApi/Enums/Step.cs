@@ -2,6 +2,14 @@
 
 public enum Step
 {
-    First,
-    Second,
+    FirstBlockQuestion1,
+    FirstBlockQuestion2,
+    FirstBlockQuestion3,
+    SecondBlockQuestion1,
+    SecondBlockQuestion2,
+    SecondBlockQuestion3,
+    SecondBlockQuestion4,
+    ThirdBlockQuestion1,
+    ThirdBlockQuestion2,
+    Completed,
 }

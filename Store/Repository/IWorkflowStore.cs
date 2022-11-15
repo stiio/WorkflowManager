@@ -3,11 +3,7 @@
 namespace Stio.WorkflowManager.Store.Repository;
 
 public interface IWorkflowStore<TWorkflow>
-    where TWorkflow : Workflow
+    where TWorkflow : IWorkflow
 {
     Task<TWorkflow?> FindById(Guid workflowId);
-}
-
-public interface IWorkflowStore : IWorkflowStore<Workflow>
-{
 }
