@@ -12,7 +12,7 @@ using Stio.WorkflowManager.DemoApi.Data;
 namespace DemoApi.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221115134939_Init")]
+    [Migration("20221116184024_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -48,8 +48,14 @@ namespace DemoApi.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -67,6 +73,9 @@ namespace DemoApi.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Data")
                         .HasColumnType("text");
 
@@ -81,6 +90,9 @@ namespace DemoApi.Data.Migrations
 
                     b.Property<string>("StepKey")
                         .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("WorkflowId")
                         .HasColumnType("uuid");

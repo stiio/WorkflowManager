@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Stio.WorkflowManager.Core;
 using Stio.WorkflowManager.DemoApi.Data;
 using Stio.WorkflowManager.DemoApi.Data.Entities;
+using Stio.WorkflowManager.DemoApi.Data.Interceptors;
 using Stio.WorkflowManager.DemoApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,7 @@ void ConfigureConfiguration(ConfigurationManager configuration, IWebHostEnvironm
 
 void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 {
+    services.AddScoped<TimeStampSaveChangesInterceptor>();
     services.AddDbContext<ApplicationDbContext>(opts =>
     {
         opts.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));

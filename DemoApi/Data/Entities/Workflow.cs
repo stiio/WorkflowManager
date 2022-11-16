@@ -1,8 +1,9 @@
-﻿using Stio.WorkflowManager.Store.Entity;
+﻿using Stio.WorkflowManager.DemoApi.Data.Interfaces;
+using Stio.WorkflowManager.Store.Entity;
 
 namespace Stio.WorkflowManager.DemoApi.Data.Entities;
 
-public class Workflow : IWorkflow
+public class Workflow : IWorkflow, ITimeStamp
 {
     public Guid Id { get; set; }
 
@@ -13,4 +14,8 @@ public class Workflow : IWorkflow
     public string? Name { get; set; }
 
     public ICollection<WorkflowStep>? WorkflowSteps { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
 }

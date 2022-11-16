@@ -28,7 +28,9 @@ namespace DemoApi.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true)
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -51,7 +53,9 @@ namespace DemoApi.Data.Migrations
                     Payload = table.Column<string>(type: "text", nullable: true),
                     StepKey = table.Column<string>(type: "text", nullable: true),
                     PreviousStepKey = table.Column<string>(type: "text", nullable: true),
-                    IsSoftDelete = table.Column<bool>(type: "boolean", nullable: false)
+                    IsSoftDelete = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
