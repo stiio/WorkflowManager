@@ -1,9 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Stio.WorkflowManager.Core;
 using Stio.WorkflowManager.DemoApi.Data;
-using Stio.WorkflowManager.DemoApi.Data.Entities;
 using Stio.WorkflowManager.DemoApi.Services;
-using Stio.WorkflowManager.DemoApi.WorkflowManager.Store;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,8 +33,8 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     });
 
     services.AddWorkflowManager(typeof(Program))
-        .AddWorkflowStore<WorkflowStore, Workflow>()
-        .AddWorkflowStepStore<WorkflowStepStore, WorkflowStep>();
+        .AddWorkflowStore<WorkflowStore>()
+        .AddWorkflowStepStore<WorkflowStepStore>();
 
     services.AddScoped<UserService>();
 

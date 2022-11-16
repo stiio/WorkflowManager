@@ -1,4 +1,6 @@
-﻿namespace Stio.WorkflowManager.Core.Interfaces;
+﻿using Stio.WorkflowManager.Store.Entity;
+
+namespace Stio.WorkflowManager.Core.Interfaces;
 
 public interface IWorkflowManagerFactory
 {

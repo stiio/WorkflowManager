@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Stio.WorkflowManager.Core.Interfaces;
 using Stio.WorkflowManager.Core.Options;
+using Stio.WorkflowManager.Store.Entity;
 
 namespace Stio.WorkflowManager.Core;
 

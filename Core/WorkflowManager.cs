@@ -12,7 +12,7 @@ namespace Stio.WorkflowManager.Core;
 
 public class WorkflowManager
 {
-    private readonly IWorkflowStepStore<IWorkflowStep> workflowStepStore;
+    private readonly IWorkflowStepStore workflowStepStore;
     private readonly IServiceProvider services;
     private readonly StepsMetadata stepsMetadata;
     private readonly IDictionary<StepKey, BaseStep> allSteps;
@@ -24,7 +24,7 @@ public class WorkflowManager
         List<IWorkflowStep> workflowSteps,
         IServiceProvider services)
     {
-        this.workflowStepStore = services.GetRequiredService<IWorkflowStepStore<IWorkflowStep>>();
+        this.workflowStepStore = services.GetRequiredService<IWorkflowStepStore>();
         this.services = services;
         this.stepsMetadata = StepsMetadata.GetInstance(WorkflowManagerOptions.TargetAssembly);
         this.Workflow = workflow;

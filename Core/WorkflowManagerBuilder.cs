@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Stio.WorkflowManager.Core.Interfaces;
-using Stio.WorkflowManager.Store.Entity;
 using Stio.WorkflowManager.Store.Repository;
 
 namespace Stio.WorkflowManager.Core;
@@ -15,18 +14,16 @@ internal class WorkflowManagerBuilder : IWorkflowManagerBuilder
         this.services = services;
     }
 
-    public IWorkflowManagerBuilder AddWorkflowStore<TWorkflowStore, TWorkflow>()
-        where TWorkflowStore : IWorkflowStore<TWorkflow>
-        where TWorkflow : IWorkflow
+    public IWorkflowManagerBuilder AddWorkflowStore<TWorkflowStore>() where TWorkflowStore : IWorkflowStore
     {
-        services.TryAddScoped(typeof(IWorkflowStore<IWorkflow>), typeof(TWorkflowStore));
+        services.TryAddScoped(typeof(IWorkflowStore), typeof(TWorkflowStore));
 
         return this;
     }
 
-    public IWorkflowManagerBuilder AddWorkflowStepStore<TWorkflowStepStore, TWorkflowStep>() where TWorkflowStepStore : IWorkflowStepStore<TWorkflowStep> where TWorkflowStep : IWorkflowStep
+    public IWorkflowManagerBuilder AddWorkflowStepStore<TWorkflowStepStore>() where TWorkflowStepStore : IWorkflowStepStore
     {
-        services.TryAddScoped(typeof(IWorkflowStepStore<IWorkflowStep>), typeof(TWorkflowStepStore));
+        services.TryAddScoped(typeof(IWorkflowStepStore), typeof(TWorkflowStepStore));
 
         return this;
     }
