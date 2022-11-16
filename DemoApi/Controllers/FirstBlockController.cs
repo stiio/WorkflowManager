@@ -29,7 +29,7 @@ public class FirstBlockController : ControllerBase
     }
 
     [HttpPost("first_question")]
-    public async Task<ResponseWithNextStep> EditFirstQuestion(Guid? workflowId, [Required] FirstBlockQuestion1StepData request)
+    public async Task<ActionResult<ResponseWithNextStep>> EditFirstQuestion(Guid? workflowId, [Required] FirstBlockQuestion1StepData request)
     {
         if (workflowId is null)
         {
@@ -53,6 +53,11 @@ public class FirstBlockController : ControllerBase
         {
             var workflowManager = await this.workflowManagerFactory.CreateWorkflowManager((Guid)workflowId);
 
+            if (!workflowManager.IsLastStep<FirstBlockQuestion1Step>())
+            {
+                return this.BadRequest();
+            }
+
             var nextStepKey = await workflowManager.Next(request);
 
             return nextStepKey.ToResponseWithNextStep((Guid)workflowId);
@@ -69,6 +74,6 @@ public class FirstBlockController : ControllerBase
             return this.BadRequest();
         }
 
-        return this.Ok(workflowManager.GetStepData());
+        return await workflowManager.GetStepData<FirstBlockQuestion1StepData>();
     }
 }

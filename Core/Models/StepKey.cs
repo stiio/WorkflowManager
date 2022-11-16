@@ -2,7 +2,7 @@
 
 public record StepKey
 {
-    private StepKey()
+    public StepKey()
     {
     }
 

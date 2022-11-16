@@ -20,12 +20,12 @@ internal class StepMetadata
 
         switch (type.BaseType!.Name)
         {
-            case "BaseStep`2":
-                this.DataType = type.BaseType.GenericTypeArguments[0];
-                this.PayloadType = type.BaseType.GenericTypeArguments[1];
+            case "BaseStep`4":
+                this.DataType = type.BaseType.GenericTypeArguments[2];
+                this.PayloadType = type.BaseType.GenericTypeArguments[3];
                 break;
-            case "BaseStep`1":
-                this.DataType = type.BaseType.GenericTypeArguments[0];
+            case "BaseStep`3":
+                this.DataType = type.BaseType.GenericTypeArguments[2];
                 break;
         }
     }

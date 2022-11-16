@@ -10,7 +10,7 @@ using Stio.WorkflowManager.Store.Repository;
 
 namespace Stio.WorkflowManager.Core;
 
-public class WorkflowManager<TWorkflow, TWorkflowStep>
+public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
     where TWorkflow : class, IWorkflow
     where TWorkflowStep : class, IWorkflowStep
 {
@@ -96,7 +96,7 @@ public class WorkflowManager<TWorkflow, TWorkflowStep>
         return await this.PrivateNext(step);
     }
 
-    public Task<object?> GetStepData()
+    public Task<object> GetStepData()
     {
         if (!this.HasSteps())
         {
@@ -104,6 +104,17 @@ public class WorkflowManager<TWorkflow, TWorkflowStep>
         }
 
         return this.GetLastStep().GetStepData();
+    }
+
+    public async Task<TStepData> GetStepData<TStepData>()
+        where TStepData : class
+    {
+        if (!this.HasSteps())
+        {
+            throw new WorkflowManagerException("Workflow no steps");
+        }
+
+        return (TStepData)(await this.GetLastStep().GetStepData());
     }
 
     public async Task<StepKey> GoToPreviousStep()

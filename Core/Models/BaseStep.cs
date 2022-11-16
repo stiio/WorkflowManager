@@ -15,7 +15,7 @@ public abstract class BaseStep<TWorkflow, TWorkflowStep>
 
     protected internal TWorkflowStep WorkflowStep { get; set; } = null!;
 
-    public abstract Task<object?> GetStepData();
+    public abstract Task<object> GetStepData();
 
     internal static void InitStep(
         BaseStep<TWorkflow, TWorkflowStep> step,
@@ -27,7 +27,7 @@ public abstract class BaseStep<TWorkflow, TWorkflowStep>
         step.WorkflowManager = workflowManager;
         step.WorkflowStep = workflowStep;
         step.StepKey = stepKey;
-        step.PreviousStepKey = stepKey;
+        step.PreviousStepKey = previousStepKey;
     }
 
     internal virtual TWorkflowStep UpdateWorkflowStep()
