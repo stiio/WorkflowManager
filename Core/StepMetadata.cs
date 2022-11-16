@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Stio.WorkflowManager.Core.Models;
+using Stio.WorkflowManager.Store.Entity;
 
 namespace Stio.WorkflowManager.Core;
 
@@ -37,18 +38,24 @@ internal class StepMetadata
 
     public Type? PayloadType { get; }
 
-    public void SetData(BaseStep step, object? formData)
+    public void SetData<TWorkflow, TWorkflowStep>(BaseStep<TWorkflow, TWorkflowStep> step, object? formData)
+        where TWorkflow : class, IWorkflow
+        where TWorkflowStep : class, IWorkflowStep
     {
         this.dataProperty!.SetValue(step, formData);
     }
 
-    public void SetPayload(BaseStep step, object? payload)
+    public void SetPayload<TWorkflow, TWorkflowStep>(BaseStep<TWorkflow, TWorkflowStep> step, object? payload)
+        where TWorkflow : class, IWorkflow
+        where TWorkflowStep : class, IWorkflowStep
     {
         this.payloadProperty!.SetValue(step, payload);
     }
 
-    public BaseStep CreateStep(IServiceProvider services)
+    public BaseStep<TWorkflow, TWorkflowStep> CreateStep<TWorkflow, TWorkflowStep>(IServiceProvider services)
+        where TWorkflow : class, IWorkflow
+        where TWorkflowStep : class, IWorkflowStep
     {
-        return (BaseStep)ActivatorUtilities.CreateInstance(services, this.type);
+        return (BaseStep<TWorkflow, TWorkflowStep>)ActivatorUtilities.CreateInstance(services, this.type);
     }
 }

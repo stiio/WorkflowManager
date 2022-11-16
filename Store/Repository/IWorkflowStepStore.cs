@@ -2,13 +2,13 @@
 
 namespace Stio.WorkflowManager.Store.Repository;
 
-public interface IWorkflowStepStore
+public interface IWorkflowStepStore<TWorkflowStep> where TWorkflowStep : class, IWorkflowStep
 {
-    Task<IWorkflowStep> Create(IWorkflowStep workflowStep);
+    Task<TWorkflowStep> Create(TWorkflowStep workflowStep);
 
-    Task<IWorkflowStep> Update(IWorkflowStep workflowStep);
+    Task<TWorkflowStep> Update(TWorkflowStep workflowStep);
 
-    Task<IWorkflowStep[]> UpdateRange(IWorkflowStep[] workflowSteps);
+    Task<TWorkflowStep[]> UpdateRange(TWorkflowStep[] workflowSteps);
 
-    Task<IWorkflowStep[]> ListStepsByWorkflowId(Guid workflowId);
+    Task<TWorkflowStep[]> ListStepsByWorkflowId(Guid workflowId);
 }

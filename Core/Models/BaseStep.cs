@@ -3,19 +3,26 @@ using Stio.WorkflowManager.Store.Entity;
 
 namespace Stio.WorkflowManager.Core.Models;
 
-public abstract class BaseStep
+public abstract class BaseStep<TWorkflow, TWorkflowStep>
+    where TWorkflow : class, IWorkflow
+    where TWorkflowStep : class, IWorkflowStep
 {
     public StepKey StepKey { get; set; } = null!;
 
     public StepKey? PreviousStepKey { get; set; }
 
-    protected internal WorkflowManager WorkflowManager { get; set; } = null!;
+    protected internal WorkflowManager<TWorkflow, TWorkflowStep> WorkflowManager { get; set; } = null!;
 
-    protected internal IWorkflowStep WorkflowStep { get; set; } = null!;
+    protected internal TWorkflowStep WorkflowStep { get; set; } = null!;
 
     public abstract Task<object?> GetStepData();
 
-    internal static void InitStep(BaseStep step, WorkflowManager workflowManager, IWorkflowStep workflowStep, StepKey stepKey, StepKey? previousStepKey)
+    internal static void InitStep(
+        BaseStep<TWorkflow, TWorkflowStep> step,
+        WorkflowManager<TWorkflow, TWorkflowStep> workflowManager,
+        TWorkflowStep workflowStep,
+        StepKey stepKey,
+        StepKey? previousStepKey)
     {
         step.WorkflowManager = workflowManager;
         step.WorkflowStep = workflowStep;
@@ -23,7 +30,7 @@ public abstract class BaseStep
         step.PreviousStepKey = stepKey;
     }
 
-    internal virtual IWorkflowStep UpdateWorkflowStep()
+    internal virtual TWorkflowStep UpdateWorkflowStep()
     {
         this.WorkflowStep.SetStepKey(this.StepKey);
         this.WorkflowStep.SetPreviousStepKey(this.PreviousStepKey);
@@ -32,12 +39,14 @@ public abstract class BaseStep
     }
 }
 
-public abstract class BaseStep<TData> : BaseStep
+public abstract class BaseStep<TWorkflow, TWorkflowStep, TData> : BaseStep<TWorkflow, TWorkflowStep>
+    where TWorkflow : class, IWorkflow
+    where TWorkflowStep : class, IWorkflowStep
     where TData : class
 {
     public TData? Data { get; set; }
 
-    internal override IWorkflowStep UpdateWorkflowStep()
+    internal override TWorkflowStep UpdateWorkflowStep()
     {
         base.UpdateWorkflowStep();
 
@@ -47,13 +56,15 @@ public abstract class BaseStep<TData> : BaseStep
     }
 }
 
-public abstract class BaseStep<TData, TPayload> : BaseStep<TData>
+public abstract class BaseStep<TWorkflow, TWorkflowStep, TData, TPayload> : BaseStep<TWorkflow, TWorkflowStep, TData>
+    where TWorkflow : class, IWorkflow
+    where TWorkflowStep : class, IWorkflowStep
     where TData : class
     where TPayload : class
 {
     public TPayload? Payload;
 
-    internal override IWorkflowStep UpdateWorkflowStep()
+    internal override TWorkflowStep UpdateWorkflowStep()
     {
         base.UpdateWorkflowStep();
 

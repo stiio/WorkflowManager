@@ -2,7 +2,9 @@
 
 namespace Stio.WorkflowManager.Core.Interfaces;
 
-public interface IWorkflowManagerFactory
+public interface IWorkflowManagerFactory<TWorkflow, TWorkflowStep>
+    where TWorkflow : class, IWorkflow
+    where TWorkflowStep : class, IWorkflowStep
 {
-    Task<WorkflowManager> CreateWorkflowManager(Guid workflowId);
+    Task<WorkflowManager<TWorkflow, TWorkflowStep>> CreateWorkflowManager(Guid workflowId);
 }

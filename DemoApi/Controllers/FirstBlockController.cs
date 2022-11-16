@@ -6,7 +6,7 @@ using Stio.WorkflowManager.DemoApi.Data.Entities;
 using Stio.WorkflowManager.DemoApi.Extensions;
 using Stio.WorkflowManager.DemoApi.Models;
 using Stio.WorkflowManager.DemoApi.Services;
-using Stio.WorkflowManager.DemoApi.WorkflowManager.Steps.FirstBlock;
+using Stio.WorkflowManager.DemoApi.Services.Steps;
 
 namespace Stio.WorkflowManager.DemoApi.Controllers;
 
@@ -14,12 +14,12 @@ namespace Stio.WorkflowManager.DemoApi.Controllers;
 [Route("api/first_block")]
 public class FirstBlockController : ControllerBase
 {
-    private readonly IWorkflowManagerFactory workflowManagerFactory;
+    private readonly IWorkflowManagerFactory<Workflow, WorkflowStep> workflowManagerFactory;
     private readonly ApplicationDbContext applicationDbContext;
     private readonly UserService userService;
 
     public FirstBlockController(
-        IWorkflowManagerFactory workflowManagerFactory,
+        IWorkflowManagerFactory<Workflow, WorkflowStep> workflowManagerFactory,
         ApplicationDbContext applicationDbContext,
         UserService userService)
     {

@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Stio.WorkflowManager.DemoApi.Data;
 using Stio.WorkflowManager.DemoApi.Data.Entities;
-using Stio.WorkflowManager.Store.Entity;
 using Stio.WorkflowManager.Store.Repository;
 
 namespace Stio.WorkflowManager.DemoApi.Services;
 
-public class WorkflowStepStore : IWorkflowStepStore
+public class WorkflowStepStore : IWorkflowStepStore<WorkflowStep>
 {
     private readonly ApplicationDbContext context;
 
@@ -15,67 +14,31 @@ public class WorkflowStepStore : IWorkflowStepStore
         this.context = context;
     }
 
-    public async Task<IWorkflowStep> Create(IWorkflowStep workflowStep)
+    public async Task<WorkflowStep> Create(WorkflowStep workflowStep)
     {
-        var step = new WorkflowStep()
-        {
-            Id = workflowStep.Id,
-            WorkflowId = workflowStep.WorkflowId,
-            Data = workflowStep.Data,
-            Payload = workflowStep.Payload,
-            StepKey = workflowStep.StepKey,
-            PreviousStepKey = workflowStep.PreviousStepKey,
-            IsSoftDelete = workflowStep.IsSoftDelete,
-        };
-
-        await this.context.WorkflowSteps.AddAsync(step);
+        await this.context.WorkflowSteps.AddAsync(workflowStep);
         await this.context.SaveChangesAsync();
 
-        return step;
+        return workflowStep;
     }
 
-    public async Task<IWorkflowStep> Update(IWorkflowStep workflowStep)
+    public async Task<WorkflowStep> Update(WorkflowStep workflowStep)
     {
-        var step = await this.context.WorkflowSteps.FirstAsync(x => x.Id == workflowStep.Id);
-
-        step.Data = workflowStep.Data;
-        step.Payload = workflowStep.Payload;
-        step.StepKey = workflowStep.StepKey;
-        step.PreviousStepKey = workflowStep.PreviousStepKey;
-        step.IsSoftDelete = workflowStep.IsSoftDelete;
-
-        this.context.WorkflowSteps.Update(step);
+        this.context.WorkflowSteps.Update(workflowStep);
         await context.SaveChangesAsync();
 
-        return step;
+        return workflowStep;
     }
 
-    public async Task<IWorkflowStep[]> UpdateRange(IWorkflowStep[] workflowSteps)
+    public async Task<WorkflowStep[]> UpdateRange(WorkflowStep[] workflowSteps)
     {
-        var stepIds = workflowSteps.Select(x => x.Id).ToArray();
-
-        var steps = await this.context.WorkflowSteps
-            .Where(x => stepIds.Contains(x.Id))
-            .ToArrayAsync();
-
-        foreach (var step in steps)
-        {
-            var workflowStep = workflowSteps.First(x => x.Id == step.Id);
-
-            step.Data = workflowStep.Data;
-            step.Payload = workflowStep.Payload;
-            step.StepKey = workflowStep.StepKey;
-            step.PreviousStepKey = workflowStep.PreviousStepKey;
-            step.IsSoftDelete = workflowStep.IsSoftDelete;
-        }
-
-        this.context.WorkflowSteps.UpdateRange(steps);
+        this.context.WorkflowSteps.UpdateRange(workflowSteps);
         await context.SaveChangesAsync();
 
-        return steps as IWorkflowStep[];
+        return workflowSteps;
     }
 
-    public async Task<IWorkflowStep[]> ListStepsByWorkflowId(Guid workflowId)
+    public async Task<WorkflowStep[]> ListStepsByWorkflowId(Guid workflowId)
     {
         return await this.context.WorkflowSteps
             .Where(workflowStep => workflowStep.WorkflowId == workflowId)

@@ -1,18 +1,21 @@
 ﻿using Stio.WorkflowManager.Core.Exceptions;
 using Stio.WorkflowManager.Core.Interfaces;
+using Stio.WorkflowManager.Store.Entity;
 using Stio.WorkflowManager.Store.Repository;
 
 namespace Stio.WorkflowManager.Core;
 
-internal class WorkflowManagerFactory : IWorkflowManagerFactory
+internal class WorkflowManagerFactory<TWorkflow, TWorkflowStep> : IWorkflowManagerFactory<TWorkflow, TWorkflowStep>
+    where TWorkflow : class, IWorkflow
+    where TWorkflowStep : class, IWorkflowStep
 {
-    private readonly IWorkflowStore workflowStore;
-    private readonly IWorkflowStepStore workflowStepStore;
+    private readonly IWorkflowStore<TWorkflow> workflowStore;
+    private readonly IWorkflowStepStore<TWorkflowStep> workflowStepStore;
     private readonly IServiceProvider services;
 
     public WorkflowManagerFactory(
-        IWorkflowStore workflowStore,
-        IWorkflowStepStore workflowStepStore,
+        IWorkflowStore<TWorkflow> workflowStore,
+        IWorkflowStepStore<TWorkflowStep> workflowStepStore,
         IServiceProvider services)
     {
         this.workflowStore = workflowStore;
@@ -20,7 +23,7 @@ internal class WorkflowManagerFactory : IWorkflowManagerFactory
         this.services = services;
     }
 
-    public async Task<WorkflowManager> CreateWorkflowManager(Guid workflowId)
+    public async Task<WorkflowManager<TWorkflow, TWorkflowStep>> CreateWorkflowManager(Guid workflowId)
     {
         var workflow = await this.workflowStore.FindById(workflowId);
 
@@ -31,6 +34,6 @@ internal class WorkflowManagerFactory : IWorkflowManagerFactory
 
         var steps = await this.workflowStepStore.ListStepsByWorkflowId(workflowId);
 
-        return new WorkflowManager(workflow, steps.ToList(), this.services);
+        return new WorkflowManager<TWorkflow, TWorkflowStep>(workflow, steps.ToList(), this.services);
     }
 }

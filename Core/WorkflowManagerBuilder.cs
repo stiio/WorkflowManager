@@ -7,23 +7,30 @@ namespace Stio.WorkflowManager.Core;
 
 internal class WorkflowManagerBuilder : IWorkflowManagerBuilder
 {
+    private readonly Type workflowType;
+    private readonly Type workflowStepType;
     private readonly IServiceCollection services;
 
-    public WorkflowManagerBuilder(IServiceCollection services)
+    public WorkflowManagerBuilder(
+        Type workflowType,
+        Type workflowStepType,
+        IServiceCollection services)
     {
+        this.workflowType = workflowType;
+        this.workflowStepType = workflowStepType;
         this.services = services;
     }
 
-    public IWorkflowManagerBuilder AddWorkflowStore<TWorkflowStore>() where TWorkflowStore : IWorkflowStore
+    public IWorkflowManagerBuilder AddWorkflowStore<TWorkflowStore>() where TWorkflowStore : class
     {
-        services.TryAddScoped(typeof(IWorkflowStore), typeof(TWorkflowStore));
+        this.services.TryAddScoped(typeof(IWorkflowStore<>).MakeGenericType(this.workflowType), typeof(TWorkflowStore));
 
         return this;
     }
 
-    public IWorkflowManagerBuilder AddWorkflowStepStore<TWorkflowStepStore>() where TWorkflowStepStore : IWorkflowStepStore
+    public IWorkflowManagerBuilder AddWorkflowStepStore<TWorkflowStepStore>() where TWorkflowStepStore : class
     {
-        services.TryAddScoped(typeof(IWorkflowStepStore), typeof(TWorkflowStepStore));
+        this.services.TryAddScoped(typeof(IWorkflowStepStore<>).MakeGenericType(this.workflowStepType), typeof(TWorkflowStepStore));
 
         return this;
     }

@@ -10,23 +10,25 @@ using Stio.WorkflowManager.Store.Repository;
 
 namespace Stio.WorkflowManager.Core;
 
-public class WorkflowManager
+public class WorkflowManager<TWorkflow, TWorkflowStep>
+    where TWorkflow : class, IWorkflow
+    where TWorkflowStep : class, IWorkflowStep
 {
-    private readonly IWorkflowStepStore workflowStepStore;
+    private readonly IWorkflowStepStore<TWorkflowStep> workflowStepStore;
     private readonly IServiceProvider services;
-    private readonly StepsMetadata stepsMetadata;
-    private readonly IDictionary<StepKey, BaseStep> allSteps;
-    private readonly IDictionary<StepKey, BaseStep> activeSteps;
-    private readonly List<BaseStep> sortedSteps;
+    private readonly StepsMetadata<TWorkflow, TWorkflowStep> stepsMetadata;
+    private readonly IDictionary<StepKey, BaseStep<TWorkflow, TWorkflowStep>> allSteps;
+    private readonly IDictionary<StepKey, BaseStep<TWorkflow, TWorkflowStep>> activeSteps;
+    private readonly List<BaseStep<TWorkflow, TWorkflowStep>> sortedSteps;
 
     internal WorkflowManager(
-        IWorkflow workflow,
-        List<IWorkflowStep> workflowSteps,
+        TWorkflow workflow,
+        List<TWorkflowStep> workflowSteps,
         IServiceProvider services)
     {
-        this.workflowStepStore = services.GetRequiredService<IWorkflowStepStore>();
+        this.workflowStepStore = services.GetRequiredService<IWorkflowStepStore<TWorkflowStep>>();
         this.services = services;
-        this.stepsMetadata = StepsMetadata.GetInstance(WorkflowManagerOptions.TargetAssembly);
+        this.stepsMetadata = StepsMetadata<TWorkflow, TWorkflowStep>.GetInstance(WorkflowManagerOptions.TargetAssembly);
         this.Workflow = workflow;
         this.WorkflowSteps = workflowSteps.ToList();
         this.allSteps = workflowSteps.ToDictionary(
@@ -41,18 +43,18 @@ public class WorkflowManager
             .ToList();
     }
 
-    public IWorkflow Workflow { get; private set; }
+    public TWorkflow Workflow { get; private set; }
 
-    public List<IWorkflowStep> WorkflowSteps { get; private set; }
+    public List<TWorkflowStep> WorkflowSteps { get; private set; }
 
     public Task<StepKey?> Start<TStep>(string? relatedObjectId = null, object? payload = null)
-        where TStep : BaseStep
+        where TStep : BaseStep<TWorkflow, TWorkflowStep>
     {
         return this.PrivateStart<TStep>(relatedObjectId, payload);
     }
 
     public Task<StepKey?> Start<TStep, TData>(TData data, string? relatedObjectId = null, object? payload = null)
-        where TStep : BaseStep<TData>
+        where TStep : BaseStep<TWorkflow, TWorkflowStep, TData>
         where TData : class
     {
         return this.PrivateStart<TStep, TData>(data, relatedObjectId, payload);
@@ -82,9 +84,9 @@ public class WorkflowManager
 
         var step = this.GetLastStep();
 
-        if (step is not BaseStep<TData> typedStep)
+        if (step is not BaseStep<TWorkflow, TWorkflowStep, TData> typedStep)
         {
-            throw new WorkflowManagerException($"{step.GetType().Name} not implement {nameof(BaseStep<TData>)}");
+            throw new WorkflowManagerException($"{step.GetType().Name} not implement {nameof(BaseStep<TWorkflow, TWorkflowStep, TData>)}");
         }
 
         typedStep.Data = data;
@@ -126,7 +128,7 @@ public class WorkflowManager
     }
 
     public async Task<StepKey> GoToStep<TStep>()
-        where TStep : BaseStep
+        where TStep : BaseStep<TWorkflow, TWorkflowStep>
     {
         var step = this.GetStep<TStep>();
 
@@ -148,7 +150,7 @@ public class WorkflowManager
     }
 
     public TStep? GetStep<TStep>(string? relatedObjectId = null)
-        where TStep : BaseStep
+        where TStep : BaseStep<TWorkflow, TWorkflowStep>
     {
         var stepKey = typeof(TStep).CreateStepKey(relatedObjectId);
 
@@ -160,7 +162,7 @@ public class WorkflowManager
         return null;
     }
 
-    public BaseStep GetLastStep()
+    public BaseStep<TWorkflow, TWorkflowStep> GetLastStep()
     {
         if (!this.HasSteps())
         {
@@ -171,7 +173,7 @@ public class WorkflowManager
     }
 
     public bool IsLastStep<TStep>(string? relatedObjectId = null)
-        where TStep : BaseStep
+        where TStep : BaseStep<TWorkflow, TWorkflowStep>
     {
         if (!this.HasSteps())
         {
@@ -200,7 +202,7 @@ public class WorkflowManager
         return this.sortedSteps.OfType<TCustomLogic>().LastOrDefault();
     }
 
-    public TCustomLogic? GetCustomLogicBefore<TCustomLogic>(BaseStep beforeStep)
+    public TCustomLogic? GetCustomLogicBefore<TCustomLogic>(BaseStep<TWorkflow, TWorkflowStep> beforeStep)
     {
         return this.sortedSteps
             .TakeWhile(step => step != beforeStep)
@@ -213,7 +215,7 @@ public class WorkflowManager
         return this.sortedSteps.OfType<TCustomLogic>();
     }
 
-    private async Task DeleteStepsAfter(BaseStep targetStep)
+    private async Task DeleteStepsAfter(BaseStep<TWorkflow, TWorkflowStep> targetStep)
     {
         var deletedSteps = this.sortedSteps
             .SkipWhile(step => step != targetStep)
@@ -236,7 +238,7 @@ public class WorkflowManager
         this.sortedSteps.RemoveAll(step => deletedSteps.Contains(step));
     }
 
-    private async Task<StepKey?> PrivateNext(BaseStep step)
+    private async Task<StepKey?> PrivateNext(BaseStep<TWorkflow, TWorkflowStep> step)
     {
         if (step is not INextStep nextStep)
         {
@@ -254,7 +256,7 @@ public class WorkflowManager
     }
 
     private async Task<StepKey?> PrivateStart<TStep, TData>(TData data, string? relatedObjectId, object? payload)
-        where TStep : BaseStep
+        where TStep : BaseStep<TWorkflow, TWorkflowStep, TData>
         where TData : class
     {
         if (this.HasSteps())
@@ -270,7 +272,7 @@ public class WorkflowManager
     }
 
     private async Task<StepKey?> PrivateStart<TStep>(string? relatedObjectId, object? payload)
-        where TStep : BaseStep
+        where TStep : BaseStep<TWorkflow, TWorkflowStep>
     {
         if (this.HasSteps())
         {
@@ -293,7 +295,7 @@ public class WorkflowManager
 
         var meta = this.stepsMetadata.GetStepMeta(stepKey.Step);
 
-        BaseStep step;
+        BaseStep<TWorkflow, TWorkflowStep> step;
         if (this.allSteps.TryGetValue(stepKey, out var existsStep))
         {
             existsStep.WorkflowStep.IsSoftDelete = false;
@@ -311,11 +313,12 @@ public class WorkflowManager
         }
         else
         {
-            var newStep = meta.CreateStep(this.services);
+            var newStep = meta.CreateStep<TWorkflow, TWorkflowStep>(this.services);
 
-            var workflowStep = Activator.CreateInstance<IWorkflowStep>();
+            var workflowStep = Activator.CreateInstance<TWorkflowStep>();
+            workflowStep.WorkflowId = this.Workflow.Id;
 
-            BaseStep.InitStep(newStep, this, workflowStep, stepKey, previousStepKey);
+            BaseStep<TWorkflow, TWorkflowStep>.InitStep(newStep, this, workflowStep, stepKey, previousStepKey);
 
             if (meta.HasPayload)
             {
@@ -333,15 +336,15 @@ public class WorkflowManager
         this.sortedSteps.Add(step);
     }
 
-    private BaseStep CreateBaseStep(IWorkflowStep workflowStep)
+    private BaseStep<TWorkflow, TWorkflowStep> CreateBaseStep(TWorkflowStep workflowStep)
     {
         var stepKey = JsonSerializer.Deserialize<StepKey>(workflowStep.StepKey!)!;
         var previousStepKey = JsonSerializer.Deserialize<StepKey>(workflowStep.PreviousStepKey ?? "null");
         var meta = this.stepsMetadata.GetStepMeta(stepKey.Step);
 
-        var step = meta.CreateStep(this.services);
+        var step = meta.CreateStep<TWorkflow, TWorkflowStep>(this.services);
 
-        BaseStep.InitStep(step, this, workflowStep, stepKey, previousStepKey);
+        BaseStep<TWorkflow, TWorkflowStep>.InitStep(step, this, workflowStep, stepKey, previousStepKey);
 
         if (meta.HasData)
         {

@@ -7,12 +7,14 @@ namespace Stio.WorkflowManager.Core;
 
 public static class ConfigureServices
 {
-    public static IWorkflowManagerBuilder AddWorkflowManager(this IServiceCollection services, Type stepsAssemblyMarkerType)
+    public static IWorkflowManagerBuilder AddWorkflowManager<TWorkflow, TWorkflowStep>(this IServiceCollection services, Type stepsAssemblyMarkerType)
+        where TWorkflow : class, IWorkflow
+        where TWorkflowStep : class, IWorkflowStep
     {
         WorkflowManagerOptions.TargetAssembly = stepsAssemblyMarkerType.Assembly;
 
-        services.AddScoped<IWorkflowManagerFactory, WorkflowManagerFactory>();
+        services.AddScoped<IWorkflowManagerFactory<TWorkflow, TWorkflowStep>, WorkflowManagerFactory<TWorkflow, TWorkflowStep>>();
 
-        return new WorkflowManagerBuilder(services);
+        return new WorkflowManagerBuilder(typeof(TWorkflow), typeof(TWorkflowStep), services);
     }
 }

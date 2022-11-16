@@ -1,16 +1,19 @@
 ﻿using System.Reflection;
 using Stio.WorkflowManager.Core.Attributes;
 using Stio.WorkflowManager.Core.Models;
+using Stio.WorkflowManager.Store.Entity;
 
 namespace Stio.WorkflowManager.Core;
 
-internal class StepsMetadata
+internal class StepsMetadata<TWorkflow, TWorkflowStep>
+    where TWorkflow : class, IWorkflow
+    where TWorkflowStep : class, IWorkflowStep
 {
     private readonly IDictionary<string, StepMetadata> steps;
 
     private StepsMetadata(Assembly assembly)
     {
-        var baseStepType = typeof(BaseStep);
+        var baseStepType = typeof(BaseStep<TWorkflow, TWorkflowStep>);
         this.steps =
             assembly.GetTypes()
                 .Where(t => !t.IsGenericType && t != baseStepType && baseStepType.IsAssignableFrom(t))
@@ -35,9 +38,9 @@ internal class StepsMetadata
                     type => new StepMetadata(type));
     }
 
-    public static StepsMetadata GetInstance(Assembly assembly)
+    public static StepsMetadata<TWorkflow, TWorkflowStep> GetInstance(Assembly assembly)
     {
-        return new StepsMetadata(assembly);
+        return new StepsMetadata<TWorkflow, TWorkflowStep>(assembly);
     }
 
     public StepMetadata GetStepMeta(string step)

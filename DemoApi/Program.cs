@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Stio.WorkflowManager.Core;
 using Stio.WorkflowManager.DemoApi.Data;
+using Stio.WorkflowManager.DemoApi.Data.Entities;
 using Stio.WorkflowManager.DemoApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,7 +33,7 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
         opts.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
     });
 
-    services.AddWorkflowManager(typeof(Program))
+    services.AddWorkflowManager<Workflow, WorkflowStep>(typeof(Program))
         .AddWorkflowStore<WorkflowStore>()
         .AddWorkflowStepStore<WorkflowStepStore>();
 
