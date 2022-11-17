@@ -53,18 +53,18 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return this.PrivateStart<TStep>(relatedObjectId, payload);
     }
 
-    public Task<StepKey?> Start<TStep, TData>(TData data, string? relatedObjectId = null, object? payload = null)
+    public Task<StepKey> Start<TStep, TData>(TData data, string? relatedObjectId = null, object? payload = null)
         where TStep : BaseStep<TWorkflow, TWorkflowStep, TData>
         where TData : class
     {
         return this.PrivateStart<TStep, TData>(data, relatedObjectId, payload);
     }
 
-    public async Task<StepKey?> Next()
+    public async Task<StepKey> Next()
     {
         if (!this.HasSteps())
         {
-            throw new WorkflowManagerException("Workflow no steps");
+            throw new WorkflowManagerNoStepsException();
         }
 
         var step = this.GetLastStep();
@@ -74,19 +74,19 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return await this.PrivateNext(step);
     }
 
-    public async Task<StepKey?> Next<TData>(TData data)
+    public async Task<StepKey> Next<TData>(TData data)
         where TData : class
     {
         if (!this.HasSteps())
         {
-            throw new WorkflowManagerException("Workflow no steps");
+            throw new WorkflowManagerNoStepsException();
         }
 
         var step = this.GetLastStep();
 
         if (step is not BaseStep<TWorkflow, TWorkflowStep, TData> typedStep)
         {
-            throw new WorkflowManagerException($"{step.GetType().Name} not implement {nameof(BaseStep<TWorkflow, TWorkflowStep, TData>)}");
+            throw new WorkflowManagerException($"{step.GetType().Name} not implement {typeof(BaseStep<TWorkflow, TWorkflowStep, TData>).Name}");
         }
 
         typedStep.Data = data;
@@ -100,7 +100,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
     {
         if (!this.HasSteps())
         {
-            throw new WorkflowManagerException("Workflow no steps");
+            throw new WorkflowManagerNoStepsException();
         }
 
         return this.GetLastStep().GetStepData();
@@ -111,7 +111,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
     {
         if (!this.HasSteps())
         {
-            throw new WorkflowManagerException("Workflow no steps");
+            throw new WorkflowManagerNoStepsException();
         }
 
         return (TStepData)(await this.GetLastStep().GetStepData());
@@ -121,14 +121,14 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
     {
         if (!this.HasSteps())
         {
-            throw new WorkflowManagerException("Workflow no steps");
+            throw new WorkflowManagerNoStepsException();
         }
 
         var step = this.GetLastStep();
 
         if (step.PreviousStepKey is null)
         {
-            throw new WorkflowManagerException("PreviousStepKey is null");
+            throw new WorkflowManagerPreviousStepException();
         }
 
         var previousStep = this.activeSteps[step.PreviousStepKey];
@@ -145,19 +145,12 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
 
         if (step is null)
         {
-            throw new WorkflowManagerException($"Step {typeof(TStep).Name} not found");
+            throw new WorkflowManagerStepNotFoundException(typeof(TStep));
         }
 
-        if (step.PreviousStepKey is null)
-        {
-            throw new WorkflowManagerException("PreviousStepKey is null");
-        }
+        await this.DeleteStepsAfter(step);
 
-        var previousStep = this.activeSteps[step.PreviousStepKey];
-
-        await this.DeleteStepsAfter(previousStep);
-
-        return previousStep.StepKey;
+        return step.StepKey;
     }
 
     public TStep? GetStep<TStep>(string? relatedObjectId = null)
@@ -177,7 +170,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
     {
         if (!this.HasSteps())
         {
-            throw new WorkflowManagerException("Workflow no steps");
+            throw new WorkflowManagerNoStepsException();
         }
 
         return this.sortedSteps.Last();
@@ -188,7 +181,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
     {
         if (!this.HasSteps())
         {
-            throw new WorkflowManagerException("Workflow no steps");
+            throw new WorkflowManagerNoStepsException();
         }
 
         var lastStep = this.GetLastStep();
@@ -249,30 +242,27 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         this.sortedSteps.RemoveAll(step => deletedSteps.Contains(step));
     }
 
-    private async Task<StepKey?> PrivateNext(BaseStep<TWorkflow, TWorkflowStep> step)
+    private async Task<StepKey> PrivateNext(BaseStep<TWorkflow, TWorkflowStep> step)
     {
         if (step is not INextStep nextStep)
         {
-            throw new WorkflowManagerException($"{step.GetType().Name} not implement {nameof(INextStep)}");
+            throw new WorkflowManagerNotImplementNextStepException(step.GetType());
         }
 
         var nextStepResult = await nextStep.Next();
 
-        if (nextStepResult.StepKey is not null)
-        {
-            await this.CreateNextStep(nextStepResult.StepKey, step.PreviousStepKey, nextStepResult.Payload);
-        }
+        await this.CreateNextStep(nextStepResult.StepKey, step.PreviousStepKey, nextStepResult.Payload);
 
         return nextStepResult.StepKey;
     }
 
-    private async Task<StepKey?> PrivateStart<TStep, TData>(TData data, string? relatedObjectId, object? payload)
+    private async Task<StepKey> PrivateStart<TStep, TData>(TData data, string? relatedObjectId, object? payload)
         where TStep : BaseStep<TWorkflow, TWorkflowStep, TData>
         where TData : class
     {
         if (this.HasSteps())
         {
-            throw new WorkflowManagerException("Workflow already have steps");
+            throw new WorkflowManagerAlreadyHaveStepsException();
         }
 
         var stepKey = typeof(TStep).CreateStepKey(relatedObjectId);
@@ -287,7 +277,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
     {
         if (this.HasSteps())
         {
-            throw new WorkflowManagerException("Workflow already have steps");
+            throw new WorkflowManagerAlreadyHaveStepsException();
         }
 
         var stepKey = typeof(TStep).CreateStepKey(relatedObjectId);
@@ -297,11 +287,11 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return await this.Next();
     }
 
-    private async Task CreateNextStep(StepKey stepKey, StepKey? previousStepKey, object? payload = null)
+    private async Task CreateNextStep(StepKey stepKey, StepKey? previousStepKey, object? payload)
     {
         if (this.activeSteps.Keys.Any(key => key == stepKey))
         {
-            throw new WorkflowManagerException($"Step {stepKey.Step}:{stepKey.RelatedObjectId} already exists");
+            throw new WorkflowManagerStepAlreadyExistsException(stepKey);
         }
 
         var meta = this.stepsMetadata.GetStepMeta(stepKey.Step);

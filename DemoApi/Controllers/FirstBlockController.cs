@@ -11,7 +11,7 @@ using Stio.WorkflowManager.DemoApi.Services.Steps;
 namespace Stio.WorkflowManager.DemoApi.Controllers;
 
 [ApiController]
-[Route("api/first_block")]
+[Route("api/workflows/first_block")]
 public class FirstBlockController : ControllerBase
 {
     private readonly IWorkflowManagerFactory<Workflow, WorkflowStep> workflowManagerFactory;

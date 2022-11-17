@@ -12,7 +12,6 @@
     <Folder Include="Models\" />
     <Folder Include="Attributes\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Exceptions\" />
     <Folder Include="Options\" />
   </ItemGroup>
 

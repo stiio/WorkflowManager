@@ -5,4 +5,6 @@ public class FirstBlockQuestion1StepData
     public string? FirstName { get; set; }
 
     public string? LastName { get; set; }
+
+    public bool Agree { get; set; }
 }

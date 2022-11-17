@@ -22,6 +22,11 @@ public class FirstBlockQuestion1Step : BaseStep<Workflow, WorkflowStep, FirstBlo
 
     public Task<NextStepResult> Next()
     {
-        return Task.FromResult(NextStepResult.NextStep(Step.FirstBlockQuestion2.ToString()));
+        if (this.Data!.Agree)
+        {
+            return Task.FromResult(NextStepResult.Create(Step.FirstBlockQuestion2.ToString()));
+        }
+
+        return Task.FromResult(NextStepResult.Create(Step.FirstBlockQuestion3.ToString()));
     }
 }

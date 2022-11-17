@@ -6,16 +6,11 @@ public class NextStepResult
     {
     }
 
-    public StepKey? StepKey { get; set; }
+    public StepKey StepKey { get; set; } = null!;
 
     public object? Payload { get; set; }
 
-    public static NextStepResult Complete()
-    {
-        return new NextStepResult();
-    }
-
-    public static NextStepResult NextStep(string step, object? payload = null)
+    public static NextStepResult Create(string step, object? payload = null)
     {
         return new NextStepResult()
         {
@@ -24,7 +19,7 @@ public class NextStepResult
         };
     }
 
-    public static NextStepResult NextStep(string step, string relatedObjectId, object? payload = null)
+    public static NextStepResult Create(string step, string relatedObjectId, object? payload = null)
     {
         return new NextStepResult()
         {
