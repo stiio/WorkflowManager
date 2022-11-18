@@ -4,6 +4,7 @@ using Stio.WorkflowManager.DemoApi.Data;
 using Stio.WorkflowManager.DemoApi.Data.Entities;
 using Stio.WorkflowManager.DemoApi.Data.Interceptors;
 using Stio.WorkflowManager.DemoApi.Services;
+using Stio.WorkflowManager.DemoApi.Services.FlowServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +41,8 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
         .AddWorkflowStepStore<WorkflowStepStore>();
 
     services.AddScoped<UserService>();
+    services.AddScoped<RelatedObjectFlowService>();
+    services.AddScoped<SecondBlockFlowService>();
 
     services.AddControllers();
     services.AddEndpointsApiExplorer();

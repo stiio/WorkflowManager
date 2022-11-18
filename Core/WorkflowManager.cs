@@ -191,6 +191,11 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return lastStep.StepKey == targetStepKey;
     }
 
+    public bool HasStep(StepKey stepKey)
+    {
+        return this.activeSteps.ContainsKey(stepKey);
+    }
+
     public bool HasSteps()
     {
         return this.sortedSteps.Any();
@@ -217,29 +222,6 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
     public IEnumerable<TCustomLogic> ListCustomLogic<TCustomLogic>()
     {
         return this.sortedSteps.OfType<TCustomLogic>();
-    }
-
-    private async Task DeleteStepsAfter(BaseStep<TWorkflow, TWorkflowStep> targetStep)
-    {
-        var deletedSteps = this.sortedSteps
-            .SkipWhile(step => step != targetStep)
-            .Skip(1)
-            .ToArray();
-
-        var workflowSteps = deletedSteps.Select(step => step.WorkflowStep).ToArray();
-        foreach (var workflowStep in workflowSteps)
-        {
-            workflowStep.IsSoftDelete = true;
-        }
-
-        await this.workflowStepStore.UpdateRange(workflowSteps);
-
-        foreach (var deletedStep in deletedSteps)
-        {
-            this.activeSteps.Remove(deletedStep.StepKey);
-        }
-
-        this.sortedSteps.RemoveAll(step => deletedSteps.Contains(step));
     }
 
     private async Task<StepKey> PrivateNext(BaseStep<TWorkflow, TWorkflowStep> step)
@@ -335,6 +317,29 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         this.allSteps.TryAdd(step.StepKey, step);
         this.activeSteps.TryAdd(step.StepKey, step);
         this.sortedSteps.Add(step);
+    }
+
+    private async Task DeleteStepsAfter(BaseStep<TWorkflow, TWorkflowStep> targetStep)
+    {
+        var deletedSteps = this.sortedSteps
+            .SkipWhile(step => step != targetStep)
+            .Skip(1)
+            .ToArray();
+
+        var workflowSteps = deletedSteps.Select(step => step.WorkflowStep).ToArray();
+        foreach (var workflowStep in workflowSteps)
+        {
+            workflowStep.IsSoftDelete = true;
+        }
+
+        await this.workflowStepStore.UpdateRange(workflowSteps);
+
+        foreach (var deletedStep in deletedSteps)
+        {
+            this.activeSteps.Remove(deletedStep.StepKey);
+        }
+
+        this.sortedSteps.RemoveAll(step => deletedSteps.Contains(step));
     }
 
     private BaseStep<TWorkflow, TWorkflowStep> CreateBaseStep(TWorkflowStep workflowStep)
