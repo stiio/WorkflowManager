@@ -2,7 +2,7 @@
 
 namespace Stio.WorkflowManager.DemoApi.Models;
 
-public class ResponseWithNextStep
+public class WrongStepResponse
 {
     public Guid WorkflowId { get; set; }
 

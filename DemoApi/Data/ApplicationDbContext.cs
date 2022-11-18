@@ -29,6 +29,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<WorkflowStep> WorkflowSteps { get; set; } = null!;
 
+    public DbSet<RelatedObject> RelatedObjects { get; set; } = null!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

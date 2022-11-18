@@ -6,11 +6,9 @@ namespace Stio.WorkflowManager.DemoApi.Extensions;
 
 public static class StepKetExtensions
 {
-    public static ResponseWithNextStep ToResponseWithNextStep(this StepKey? stepKey, Guid workflowId)
+    public static NextStepResponse ToNextStepResponse(this StepKey stepKey, Guid workflowId)
     {
-        ArgumentNullException.ThrowIfNull(stepKey);
-
-        return new ResponseWithNextStep()
+        return new NextStepResponse()
         {
             WorkflowId = workflowId,
             Step = Enum.Parse<Step>(stepKey.Step),
