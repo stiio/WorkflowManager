@@ -5,7 +5,7 @@ using Stio.WorkflowManager.DemoApi.Data.Entities;
 using Stio.WorkflowManager.DemoApi.Enums;
 using Stio.WorkflowManager.DemoApi.Models;
 
-namespace Stio.WorkflowManager.DemoApi.Services.Steps;
+namespace Stio.WorkflowManager.DemoApi.Services.Steps.FirstBlock;
 
 [Step(nameof(Step.FirstBlockQuestion1))]
 public class FirstBlockQuestion1Step : BaseStep<Workflow, WorkflowStep, FirstBlockQuestion1StepData>,
@@ -15,14 +15,14 @@ public class FirstBlockQuestion1Step : BaseStep<Workflow, WorkflowStep, FirstBlo
     {
         return Task.FromResult<object>(new FirstBlockQuestion1StepData()
         {
-            FirstName = this.Data?.FirstName,
-            LastName = this.Data?.LastName,
+            FirstName = Data?.FirstName,
+            LastName = Data?.LastName,
         });
     }
 
     public Task<NextStepResult> Next()
     {
-        if (this.Data!.Agree)
+        if (Data!.Agree)
         {
             return Task.FromResult(NextStepResult.Create(Step.FirstBlockQuestion2.ToString()));
         }

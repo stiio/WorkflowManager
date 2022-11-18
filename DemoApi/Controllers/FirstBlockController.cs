@@ -6,7 +6,7 @@ using Stio.WorkflowManager.DemoApi.Data.Entities;
 using Stio.WorkflowManager.DemoApi.Extensions;
 using Stio.WorkflowManager.DemoApi.Models;
 using Stio.WorkflowManager.DemoApi.Services;
-using Stio.WorkflowManager.DemoApi.Services.Steps;
+using Stio.WorkflowManager.DemoApi.Services.Steps.FirstBlock;
 
 namespace Stio.WorkflowManager.DemoApi.Controllers;
 

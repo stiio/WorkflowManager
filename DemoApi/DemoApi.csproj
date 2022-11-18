@@ -27,8 +27,9 @@
     <Folder Include="Data\Interfaces\" />
     <Folder Include="Data\Interceptors\" />
     <Folder Include="Enums\" />
-    <Folder Include="Models\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Services\FlowServices\" />
+    <Folder Include="Services\Steps\SecondBlock\" />
   </ItemGroup>
 
 </Project>
