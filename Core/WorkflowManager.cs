@@ -251,10 +251,10 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return this.sortedSteps.OfType<TCustomLogic>().LastOrDefault();
     }
 
-    public TCustomLogic? GetCustomLogicBefore<TCustomLogic>(BaseStep<TWorkflow, TWorkflowStep> beforeStep)
+    public TCustomLogic? GetCustomLogicBefore<TCustomLogic>(StepKey beforeStepKey)
     {
         return this.sortedSteps
-            .TakeWhile(step => step != beforeStep)
+            .TakeWhile(step => step.StepKey != beforeStepKey)
             .OfType<TCustomLogic>()
             .LastOrDefault();
     }

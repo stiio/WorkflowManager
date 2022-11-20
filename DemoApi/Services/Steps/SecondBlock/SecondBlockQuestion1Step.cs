@@ -6,6 +6,7 @@ using Stio.WorkflowManager.DemoApi.Data;
 using Stio.WorkflowManager.DemoApi.Data.Entities;
 using Stio.WorkflowManager.DemoApi.Enums;
 using Stio.WorkflowManager.DemoApi.Models;
+using Stio.WorkflowManager.DemoApi.Services.FlowServices;
 using Stio.WorkflowManager.DemoApi.Services.Steps.FirstBlock;
 
 namespace Stio.WorkflowManager.DemoApi.Services.Steps.SecondBlock;
@@ -16,11 +17,16 @@ public class SecondBlockQuestion1Step : BaseStep<Workflow, WorkflowStep>,
 {
     private readonly UserService userService;
     private readonly ApplicationDbContext applicationDbContext;
+    private readonly SecondBlockFlowService secondBlockFlowService;
 
-    public SecondBlockQuestion1Step(UserService userService, ApplicationDbContext applicationDbContext)
+    public SecondBlockQuestion1Step(
+        UserService userService,
+        ApplicationDbContext applicationDbContext,
+        SecondBlockFlowService secondBlockFlowService)
     {
         this.userService = userService;
         this.applicationDbContext = applicationDbContext;
+        this.secondBlockFlowService = secondBlockFlowService;
     }
 
     public override async Task<object> GetStepData()
@@ -44,8 +50,8 @@ public class SecondBlockQuestion1Step : BaseStep<Workflow, WorkflowStep>,
         };
     }
 
-    public async Task<NextStepResult> Next()
+    public Task<NextStepResult> Next()
     {
-        throw new NotImplementedException();
+        return this.secondBlockFlowService.CompleteSecondBlockQuestion1(this.WorkflowManager);
     }
 }

@@ -31,7 +31,7 @@ public class FirstBlockController : ControllerBase
     }
 
     [HttpGet("first_question")]
-    public async Task<ActionResult<FirstBlockQuestion1StepData>> GetFirstQuestion(Guid workflowId)
+    public async Task<ActionResult<FirstBlockQuestion1Data>> GetFirstQuestion(Guid workflowId)
     {
         var workflowManager = await this.workflowManagerFactory.CreateWorkflowManager((Guid)workflowId);
 
@@ -40,11 +40,11 @@ public class FirstBlockController : ControllerBase
             return this.BadRequest(workflowManager.CreateWrongStepResponse());
         }
 
-        return await workflowManager.GetStepData<FirstBlockQuestion1StepData>();
+        return await workflowManager.GetStepData<FirstBlockQuestion1Data>();
     }
 
     [HttpPost, Route("api/workflows/first_block/first_question")]
-    public async Task<ActionResult<NextStepResponse>> EditFirstQuestion(Guid? workflowId, [Required] FirstBlockQuestion1StepData request)
+    public async Task<ActionResult<NextStepResponse>> EditFirstQuestion(Guid? workflowId, [Required] FirstBlockQuestion1Data request)
     {
         WorkflowManager<Workflow, WorkflowStep> workflowManager;
         if (workflowId is null)
@@ -77,14 +77,14 @@ public class FirstBlockController : ControllerBase
         }
         else
         {
-            nextStepKey = await workflowManager.Start<FirstBlockQuestion1Step, FirstBlockQuestion1StepData>(request);
+            nextStepKey = await workflowManager.Start<FirstBlockQuestion1Step, FirstBlockQuestion1Data>(request);
         }
 
         return this.Ok(nextStepKey.ToNextStepResponse(workflowManager.Workflow.Id));
     }
 
     [HttpGet("second_question")]
-    public async Task<ActionResult<FirstBlockQuestion2StepData>> GetSecondQuestion(Guid workflowId)
+    public async Task<ActionResult<FirstBlockQuestion2Data>> GetSecondQuestion(Guid workflowId)
     {
         var workflowManager = await this.workflowManagerFactory.CreateWorkflowManager(workflowId);
 
@@ -93,11 +93,11 @@ public class FirstBlockController : ControllerBase
             return this.BadRequest(workflowManager.CreateWrongStepResponse());
         }
 
-        return await workflowManager.GetStepData<FirstBlockQuestion2StepData>();
+        return await workflowManager.GetStepData<FirstBlockQuestion2Data>();
     }
 
     [HttpPatch("second_question")]
-    public async Task<ActionResult<NextStepResponse>> EditSecondQuestion(Guid workflowId, [Required] FirstBlockQuestion2StepData request)
+    public async Task<ActionResult<NextStepResponse>> EditSecondQuestion(Guid workflowId, [Required] FirstBlockQuestion2Data request)
     {
         var workflowManager = await this.workflowManagerFactory.CreateWorkflowManager(workflowId);
 
@@ -112,7 +112,7 @@ public class FirstBlockController : ControllerBase
     }
 
     [HttpGet("third_question")]
-    public async Task<ActionResult<FirstBlockQuestion3StepData>> GetThirdQuestion(Guid workflowId)
+    public async Task<ActionResult<FirstBlockQuestion3Data>> GetThirdQuestion(Guid workflowId)
     {
         var workflowManager = await this.workflowManagerFactory.CreateWorkflowManager(workflowId);
 
@@ -121,11 +121,11 @@ public class FirstBlockController : ControllerBase
             return this.BadRequest(workflowManager.CreateWrongStepResponse());
         }
 
-        return await workflowManager.GetStepData<FirstBlockQuestion3StepData>();
+        return await workflowManager.GetStepData<FirstBlockQuestion3Data>();
     }
 
     [HttpPatch("third_question")]
-    public async Task<ActionResult<NextStepResponse>> EditThirdQuestion(Guid workflowId, [Required] FirstBlockQuestion3StepData request)
+    public async Task<ActionResult<NextStepResponse>> EditThirdQuestion(Guid workflowId, [Required] FirstBlockQuestion3Data request)
     {
         var workflowManager = await this.workflowManagerFactory.CreateWorkflowManager(workflowId);
 

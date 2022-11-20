@@ -1,6 +1,6 @@
 ﻿namespace Stio.WorkflowManager.DemoApi.Models;
 
-public class FirstBlockQuestion1StepData
+public class FirstBlockQuestion1Data
 {
     public string? FirstName { get; set; }
 

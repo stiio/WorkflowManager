@@ -9,13 +9,13 @@ using Stio.WorkflowManager.DemoApi.Services.CustomLogic;
 namespace Stio.WorkflowManager.DemoApi.Services.Steps.FirstBlock;
 
 [Step(nameof(Step.FirstBlockQuestion3))]
-public class FirstBlockQuestion3Step : BaseStep<Workflow, WorkflowStep, FirstBlockQuestion3StepData>,
+public class FirstBlockQuestion3Step : BaseStep<Workflow, WorkflowStep, FirstBlockQuestion3Data>,
     INextStep,
     IFirstBlockCustomLogic
 {
     public override Task<object> GetStepData()
     {
-        return Task.FromResult<object>(new FirstBlockQuestion3StepData()
+        return Task.FromResult<object>(new FirstBlockQuestion3Data()
         {
             Agree = this.Data?.Agree ?? false,
         });

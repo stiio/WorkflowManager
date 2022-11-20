@@ -8,12 +8,12 @@ using Stio.WorkflowManager.DemoApi.Models;
 namespace Stio.WorkflowManager.DemoApi.Services.Steps.FirstBlock;
 
 [Step(nameof(Step.FirstBlockQuestion1))]
-public class FirstBlockQuestion1Step : BaseStep<Workflow, WorkflowStep, FirstBlockQuestion1StepData>,
+public class FirstBlockQuestion1Step : BaseStep<Workflow, WorkflowStep, FirstBlockQuestion1Data>,
     INextStep
 {
     public override Task<object> GetStepData()
     {
-        return Task.FromResult<object>(new FirstBlockQuestion1StepData()
+        return Task.FromResult<object>(new FirstBlockQuestion1Data()
         {
             FirstName = Data?.FirstName,
             LastName = Data?.LastName,
