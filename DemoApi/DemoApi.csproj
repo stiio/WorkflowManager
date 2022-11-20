@@ -29,6 +29,7 @@
     <Folder Include="Enums\" />
     <Folder Include="Extensions\" />
     <Folder Include="Services\FlowServices\" />
+    <Folder Include="Services\CustomLogic\" />
   </ItemGroup>
 
 </Project>

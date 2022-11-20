@@ -7,13 +7,13 @@ public abstract class BaseStep<TWorkflow, TWorkflowStep>
     where TWorkflow : class, IWorkflow
     where TWorkflowStep : class, IWorkflowStep
 {
-    public StepKey StepKey { get; set; } = null!;
+    public StepKey StepKey { get; internal set; } = null!;
 
-    public StepKey? PreviousStepKey { get; set; }
+    public StepKey? PreviousStepKey { get; internal set; }
 
-    protected internal WorkflowManager<TWorkflow, TWorkflowStep> WorkflowManager { get; set; } = null!;
+    protected internal WorkflowManager<TWorkflow, TWorkflowStep> WorkflowManager { get; internal set; } = null!;
 
-    protected internal TWorkflowStep WorkflowStep { get; set; } = null!;
+    protected internal TWorkflowStep WorkflowStep { get; internal set; } = null!;
 
     public abstract Task<object> GetStepData();
 

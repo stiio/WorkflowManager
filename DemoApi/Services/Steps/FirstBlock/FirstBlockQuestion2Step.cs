@@ -4,12 +4,14 @@ using Stio.WorkflowManager.Core.Models;
 using Stio.WorkflowManager.DemoApi.Data.Entities;
 using Stio.WorkflowManager.DemoApi.Enums;
 using Stio.WorkflowManager.DemoApi.Models;
+using Stio.WorkflowManager.DemoApi.Services.CustomLogic;
 
 namespace Stio.WorkflowManager.DemoApi.Services.Steps.FirstBlock;
 
 [Step(nameof(Step.FirstBlockQuestion2))]
 public class FirstBlockQuestion2Step : BaseStep<Workflow, WorkflowStep, FirstBlockQuestion2StepData>,
-    INextStep
+    INextStep,
+    IFirstBlockCustomLogic
 {
     public override Task<object> GetStepData()
     {
@@ -22,5 +24,10 @@ public class FirstBlockQuestion2Step : BaseStep<Workflow, WorkflowStep, FirstBlo
     public Task<NextStepResult> Next()
     {
         return Task.FromResult(NextStepResult.Create(Step.SecondBlockQuestion1.ToString()));
+    }
+
+    public bool IsSomething()
+    {
+        return this.Data?.Amount > 500;
     }
 }

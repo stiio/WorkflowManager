@@ -1,8 +1,13 @@
-﻿namespace Stio.WorkflowManager.Core.Exceptions;
+﻿using Stio.WorkflowManager.Core.Models;
+
+namespace Stio.WorkflowManager.Core.Exceptions;
 
 public class WorkflowManagerStepNotFoundException : WorkflowManagerException
 {
-    public WorkflowManagerStepNotFoundException(Type stepType) : base($"Step {stepType.Name} not found")
+    public WorkflowManagerStepNotFoundException(StepKey stepKey)
+        : base(string.IsNullOrEmpty(stepKey.RelatedObjectId)
+            ? $"Step {stepKey.Step} not found"
+            : $"Step {stepKey.Step}:{stepKey.RelatedObjectId} not found")
     {
     }
 }

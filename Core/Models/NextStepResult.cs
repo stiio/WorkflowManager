@@ -27,4 +27,13 @@ public class NextStepResult
             Payload = payload,
         };
     }
+
+    public static NextStepResult Create(StepKey stepKey, object? payload = null)
+    {
+        return new NextStepResult()
+        {
+            StepKey = stepKey,
+            Payload = payload,
+        };
+    }
 }
