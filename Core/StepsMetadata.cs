@@ -16,7 +16,7 @@ internal class StepsMetadata<TWorkflow, TWorkflowStep>
         var baseStepType = typeof(BaseStep<TWorkflow, TWorkflowStep>);
         this.steps =
             assembly.GetTypes()
-                .Where(t => !t.IsGenericType && t != baseStepType && baseStepType.IsAssignableFrom(t))
+                .Where(type => baseStepType.IsAssignableFrom(type) && !type.IsAbstract)
                 .ToDictionary(
                     stepType =>
                     {

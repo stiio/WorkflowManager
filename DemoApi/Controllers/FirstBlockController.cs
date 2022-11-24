@@ -42,7 +42,7 @@ public class FirstBlockController : ControllerBase
         return await workflowManager.GetStepData<FirstBlockQuestion1Response>();
     }
 
-    [HttpPost, Route("api/workflows/first_block/first_question")]
+    [HttpPost("~/api/workflows/first_block/first_question")]
     public async Task<ActionResult<NextStepResponse>> EditFirstQuestion(Guid? workflowId, [Required] FirstBlockQuestion1Data request)
     {
         WorkflowManager<Workflow, WorkflowStep> workflowManager;

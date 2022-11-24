@@ -18,16 +18,8 @@ internal class StepMetadata
         this.dataProperty = type.GetProperty("Data");
         this.payloadProperty = type.GetProperty("Payload");
 
-        switch (type.BaseType!.Name)
-        {
-            case "BaseStep`4":
-                this.DataType = type.BaseType.GenericTypeArguments[2];
-                this.PayloadType = type.BaseType.GenericTypeArguments[3];
-                break;
-            case "BaseStep`3":
-                this.DataType = type.BaseType.GenericTypeArguments[2];
-                break;
-        }
+        this.DataType = dataProperty?.PropertyType;
+        this.PayloadType = payloadProperty?.PropertyType;
     }
 
     public bool HasData => this.dataProperty is not null;

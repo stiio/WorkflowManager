@@ -22,6 +22,31 @@ namespace DemoApi.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Stio.WorkflowManager.DemoApi.Data.Entities.RelatedObject", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("WorkflowId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkflowId");
+
+                    b.ToTable("RelatedObjects");
+                });
+
             modelBuilder.Entity("Stio.WorkflowManager.DemoApi.Data.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -99,6 +124,17 @@ namespace DemoApi.Data.Migrations
                     b.HasIndex("WorkflowId");
 
                     b.ToTable("WorkflowSteps");
+                });
+
+            modelBuilder.Entity("Stio.WorkflowManager.DemoApi.Data.Entities.RelatedObject", b =>
+                {
+                    b.HasOne("Stio.WorkflowManager.DemoApi.Data.Entities.Workflow", "Workflow")
+                        .WithMany()
+                        .HasForeignKey("WorkflowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Workflow");
                 });
 
             modelBuilder.Entity("Stio.WorkflowManager.DemoApi.Data.Entities.Workflow", b =>

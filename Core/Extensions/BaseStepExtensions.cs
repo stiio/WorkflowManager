@@ -15,6 +15,7 @@ internal static class BaseStepExtensions
         
         while (dictionary.TryGetValue(nextKey, out var nextStep))
         {
+            nextKey = nextStep.StepKey;
             yield return nextStep;
         }
     }

@@ -275,7 +275,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
 
         var nextStepResult = await nextStep.Next();
 
-        await this.CreateNextStep(nextStepResult.StepKey, step.PreviousStepKey, nextStepResult.Payload);
+        await this.CreateNextStep(nextStepResult.StepKey, step.StepKey, nextStepResult.Payload);
 
         return nextStepResult.StepKey;
     }
@@ -365,12 +365,14 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
 
         if (meta.HasData)
         {
-            meta.SetData(step, JsonSerializer.Deserialize(workflowStep.Data ?? "null", meta.DataType!));
+            var data = JsonSerializer.Deserialize(workflowStep.Data ?? "null", meta.DataType!);
+            meta.SetData(step, data);
         }
 
         if (meta.HasPayload)
         {
-            meta.SetPayload(step, JsonSerializer.Deserialize(workflowStep.Payload ?? "null", meta.PayloadType!));
+            var payload = JsonSerializer.Deserialize(workflowStep.Payload ?? "null", meta.PayloadType!);
+            meta.SetPayload(step, payload);
         }
 
         return step;

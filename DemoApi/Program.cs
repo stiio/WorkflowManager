@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Stio.WorkflowManager.Core;
 using Stio.WorkflowManager.DemoApi.Data;
@@ -46,7 +47,12 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     services.AddScoped<ThirdBlockFlowService>();
     services.AddScoped<ReviewBlockService>();
 
-    services.AddControllers();
+    services.AddControllers()
+        .AddJsonOptions(opts =>
+        {
+            opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        });
+
     services.AddEndpointsApiExplorer();
     services.AddSwaggerGen();
     services.AddHttpContextAccessor();

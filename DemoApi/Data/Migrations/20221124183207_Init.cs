@@ -44,6 +44,27 @@ namespace DemoApi.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RelatedObjects",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    WorkflowId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RelatedObjects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RelatedObjects_Workflows_WorkflowId",
+                        column: x => x.WorkflowId,
+                        principalTable: "Workflows",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "WorkflowSteps",
                 columns: table => new
                 {
@@ -74,6 +95,11 @@ namespace DemoApi.Data.Migrations
                 value: new Guid("aa9afdaf-2c5d-4ca6-81a1-64d98cc56878"));
 
             migrationBuilder.CreateIndex(
+                name: "IX_RelatedObjects_WorkflowId",
+                table: "RelatedObjects",
+                column: "WorkflowId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Workflows_UserId",
                 table: "Workflows",
                 column: "UserId");
@@ -87,6 +113,9 @@ namespace DemoApi.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "RelatedObjects");
+
             migrationBuilder.DropTable(
                 name: "WorkflowSteps");
 
