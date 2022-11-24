@@ -12,9 +12,9 @@ public class SecondBlockQuestion2Step : CustomBaseStep<SecondBlockQuestion2Data>
 {
     public override Task<object> GetStepData()
     {
-        return Task.FromResult<object>(new SecondBlockQuestion2Data()
+        return Task.FromResult<object>(new SecondBlockQuestion2Response()
         {
-            SomeAnswer = this.Data?.SomeAnswer ?? false,
+            SomeAnswer = this.Data?.SomeAnswer,
             SomeInput = this.Data?.SomeInput,
         });
     }

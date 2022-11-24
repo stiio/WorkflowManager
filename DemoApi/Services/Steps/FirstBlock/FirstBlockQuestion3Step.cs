@@ -14,7 +14,7 @@ public class FirstBlockQuestion3Step : CustomBaseStep<FirstBlockQuestion3Data>,
 {
     public override Task<object> GetStepData()
     {
-        return Task.FromResult<object>(new FirstBlockQuestion3Data()
+        return Task.FromResult<object>(new FirstBlockQuestion3Response()
         {
             Agree = this.Data?.Agree ?? false,
         });

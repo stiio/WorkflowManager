@@ -14,9 +14,9 @@ public class FirstBlockQuestion2Step : CustomBaseStep<FirstBlockQuestion2Data>,
 {
     public override Task<object> GetStepData()
     {
-        return Task.FromResult<object>(new FirstBlockQuestion2Data()
+        return Task.FromResult<object>(new FirstBlockQuestion2Response()
         {
-            Amount = this.Data?.Amount ?? 0,
+            Amount = this.Data?.Amount,
         });
     }
 

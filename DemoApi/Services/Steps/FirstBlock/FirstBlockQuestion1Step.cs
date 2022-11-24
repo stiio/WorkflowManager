@@ -12,16 +12,16 @@ public class FirstBlockQuestion1Step : CustomBaseStep<FirstBlockQuestion1Data>,
 {
     public override Task<object> GetStepData()
     {
-        return Task.FromResult<object>(new FirstBlockQuestion1Data()
+        return Task.FromResult<object>(new FirstBlockQuestion1Response()
         {
-            FirstName = Data?.FirstName,
-            LastName = Data?.LastName,
+            FirstName = this.Data?.FirstName,
+            LastName = this.Data?.LastName,
         });
     }
 
     public Task<NextStepResult> Next()
     {
-        if (Data!.Agree)
+        if (this.Data!.Agree)
         {
             return Task.FromResult(NextStepResult.Create(Step.FirstBlockQuestion2.ToString()));
         }

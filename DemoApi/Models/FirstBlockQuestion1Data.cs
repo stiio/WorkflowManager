@@ -1,10 +1,14 @@
-﻿namespace Stio.WorkflowManager.DemoApi.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Stio.WorkflowManager.DemoApi.Models;
 
 public class FirstBlockQuestion1Data
 {
-    public string? FirstName { get; set; }
+    [Required]
+    public string FirstName { get; set; } = null!;
 
-    public string? LastName { get; set; }
+    [Required]
+    public string LastName { get; set; } = null!;
 
     public bool Agree { get; set; }
 }
