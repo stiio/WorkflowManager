@@ -3,7 +3,6 @@ using Stio.WorkflowManager.Core.Attributes;
 using Stio.WorkflowManager.Core.Interfaces;
 using Stio.WorkflowManager.Core.Models;
 using Stio.WorkflowManager.DemoApi.Data;
-using Stio.WorkflowManager.DemoApi.Data.Entities;
 using Stio.WorkflowManager.DemoApi.Enums;
 using Stio.WorkflowManager.DemoApi.Models;
 using Stio.WorkflowManager.DemoApi.Services.FlowServices;
@@ -12,7 +11,7 @@ using Stio.WorkflowManager.DemoApi.Services.Steps.FirstBlock;
 namespace Stio.WorkflowManager.DemoApi.Services.Steps.SecondBlock;
 
 [Step(nameof(Step.SecondBlockQuestion1))]
-public class SecondBlockQuestion1Step : BaseStep<Workflow, WorkflowStep>,
+public class SecondBlockQuestion1Step : CustomBaseStep,
     INextStep
 {
     private readonly UserService userService;

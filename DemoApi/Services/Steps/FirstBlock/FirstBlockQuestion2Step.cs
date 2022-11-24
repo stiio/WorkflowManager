@@ -1,7 +1,6 @@
 ﻿using Stio.WorkflowManager.Core.Attributes;
 using Stio.WorkflowManager.Core.Interfaces;
 using Stio.WorkflowManager.Core.Models;
-using Stio.WorkflowManager.DemoApi.Data.Entities;
 using Stio.WorkflowManager.DemoApi.Enums;
 using Stio.WorkflowManager.DemoApi.Models;
 using Stio.WorkflowManager.DemoApi.Services.CustomLogic;
@@ -9,7 +8,7 @@ using Stio.WorkflowManager.DemoApi.Services.CustomLogic;
 namespace Stio.WorkflowManager.DemoApi.Services.Steps.FirstBlock;
 
 [Step(nameof(Step.FirstBlockQuestion2))]
-public class FirstBlockQuestion2Step : BaseStep<Workflow, WorkflowStep, FirstBlockQuestion2Data>,
+public class FirstBlockQuestion2Step : CustomBaseStep<FirstBlockQuestion2Data>,
     INextStep,
     IFirstBlockCustomLogic
 {

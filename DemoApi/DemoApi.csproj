@@ -30,6 +30,8 @@
     <Folder Include="Extensions\" />
     <Folder Include="Services\FlowServices\" />
     <Folder Include="Services\CustomLogic\" />
+    <Folder Include="Services\Steps\ThirdBlock\" />
+    <Folder Include="Services\Steps\ReviewBlock\" />
   </ItemGroup>
 
 </Project>

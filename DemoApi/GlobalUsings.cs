@@ -1,0 +1,1 @@
+﻿global using CustomWorkflowManager = Stio.WorkflowManager.Core.WorkflowManager<Stio.WorkflowManager.DemoApi.Data.Entities.Workflow, Stio.WorkflowManager.DemoApi.Data.Entities.WorkflowStep>;

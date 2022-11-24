@@ -43,6 +43,8 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     services.AddScoped<UserService>();
     services.AddScoped<RelatedObjectFlowService>();
     services.AddScoped<SecondBlockFlowService>();
+    services.AddScoped<ThirdBlockFlowService>();
+    services.AddScoped<ReviewBlockService>();
 
     services.AddControllers();
     services.AddEndpointsApiExplorer();

@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Stio.WorkflowManager.Core;
 using Stio.WorkflowManager.Core.Models;
 using Stio.WorkflowManager.DemoApi.Data;
-using Stio.WorkflowManager.DemoApi.Data.Entities;
 using Stio.WorkflowManager.DemoApi.Enums;
 
 namespace Stio.WorkflowManager.DemoApi.Services.FlowServices;
@@ -16,7 +14,7 @@ public class RelatedObjectFlowService
         this.applicationDbContext = applicationDbContext;
     }
 
-    public async Task<StepKey?> GetNextStepKey(WorkflowManager<Workflow, WorkflowStep> workflowManager, Step step)
+    public async Task<StepKey?> GetNextStepKey(CustomWorkflowManager workflowManager, Step step)
     {
         var relatedObjects = await this.applicationDbContext.RelatedObjects
             .Where(relatedObject => relatedObject.WorkflowId == workflowManager.Workflow.Id)
@@ -26,5 +24,10 @@ public class RelatedObjectFlowService
             .OrderBy(relatedObject => relatedObject.Name)
             .Select(relatedObject => StepKey.Create(step.ToString(), relatedObject.Id.ToString()))
             .FirstOrDefault(stepKey => !workflowManager.HasStep(stepKey));
+    }
+
+    public StepKey? GetNextKey(CustomWorkflowManager workflowManager, StepKey[] stepKeys)
+    {
+        return stepKeys.FirstOrDefault(k => !workflowManager.HasStep(k));
     }
 }

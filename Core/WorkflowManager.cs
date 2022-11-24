@@ -43,6 +43,8 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
             .ToList();
     }
 
+    public Guid WorkflowId => this.Workflow.Id;
+
     public TWorkflow Workflow { get; private set; }
 
     public List<TWorkflowStep> WorkflowSteps { get; private set; }

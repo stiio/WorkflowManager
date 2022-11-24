@@ -11,5 +11,6 @@ public enum Step
     SecondBlockQuestion4,
     ThirdBlockQuestion1,
     ThirdBlockQuestion2,
+    Review,
     Completed,
 }
