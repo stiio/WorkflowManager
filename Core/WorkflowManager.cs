@@ -238,6 +238,13 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return this.activeSteps.ContainsKey(stepKey);
     }
 
+    public bool HasStep<TStep>(string? relatedObjectId = null)
+    {
+        var stepKey = typeof(TStep).CreateStepKey(relatedObjectId);
+
+        return this.HasStep(stepKey);
+    }
+
     public bool HasSteps()
     {
         return this.sortedSteps.Any();

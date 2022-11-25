@@ -46,7 +46,7 @@ public class ThirdBlockFlowService
             ?.CheckedIds
             .Where(checkedId => relatedObjects.Any(relatedObject => relatedObject.Id == checkedId))
             .Select(checkedId => StepKey.Create(Step.ThirdBlockQuestion2.ToString(), checkedId.ToString()))
-            .ToArray();
+            .ToArray() ?? Array.Empty<StepKey>();
 
         var nextThirdBlockQuestion2StepKey = this.relatedObjectFlowService.GetNextKey(workflowManager, thirdBlockQuestion2StepKeys);
         if (nextThirdBlockQuestion2StepKey is not null)
