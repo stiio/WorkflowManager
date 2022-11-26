@@ -16,6 +16,7 @@ public class FirstBlockQuestion1Step : CustomBaseStep<FirstBlockQuestion1Data>,
         {
             FirstName = this.Data?.FirstName,
             LastName = this.Data?.LastName,
+            Agree = this.Data?.Agree,
         });
     }
 

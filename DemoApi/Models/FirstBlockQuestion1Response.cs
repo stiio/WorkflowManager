@@ -6,5 +6,5 @@ public class FirstBlockQuestion1Response
     
     public string? LastName { get; set; }
 
-    public bool Agree { get; set; }
+    public bool? Agree { get; set; }
 }

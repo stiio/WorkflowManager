@@ -25,7 +25,7 @@ public class SecondBlockQuestion4Step : CustomBaseStep<SecondBlockQuestion4Data>
 
     public override async Task<object> GetStepData()
     {
-        var relatedObject = await this.applicationDbContext.RelatedObjects.FindAsync(new Guid(this.StepKey.RelatedObjectId!));
+        var relatedObject = await this.applicationDbContext.RelatedObjects.FindAsync(this.GetRelatedObjectId());
 
         ArgumentNullException.ThrowIfNull(relatedObject);
 

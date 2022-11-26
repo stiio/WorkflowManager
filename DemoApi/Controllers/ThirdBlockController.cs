@@ -47,11 +47,11 @@ public class ThirdBlockController : ControllerBase
     }
 
     [HttpGet("second_question")]
-    public async Task<ActionResult<ThirdBlockQuestion2Response>> GetSecondQuestion(Guid workflowId)
+    public async Task<ActionResult<ThirdBlockQuestion2Response>> GetSecondQuestion(Guid workflowId, Guid relatedObjectId)
     {
         var workflowManager = await this.workflowManagerFactory.CreateWorkflowManager(workflowId);
 
-        if (!workflowManager.IsLastStep<ThirdBlockQuestion2Step>())
+        if (!workflowManager.IsLastStep<ThirdBlockQuestion2Step>(relatedObjectId.ToString()))
         {
             return this.BadRequest(workflowManager.CreateWrongStepResponse());
         }
@@ -60,11 +60,11 @@ public class ThirdBlockController : ControllerBase
     }
 
     [HttpPatch("second_question")]
-    public async Task<ActionResult<NextStepResponse>> EditSecondQuestion(Guid workflowId, [Required] ThirdBlockQuestion2Data request)
+    public async Task<ActionResult<NextStepResponse>> EditSecondQuestion(Guid workflowId, Guid relatedObjectId, [Required] ThirdBlockQuestion2Data request)
     {
         var workflowManager = await this.workflowManagerFactory.CreateWorkflowManager(workflowId);
 
-        if (!workflowManager.IsLastStep<ThirdBlockQuestion2Step>())
+        if (!workflowManager.IsLastStep<ThirdBlockQuestion2Step>(relatedObjectId.ToString()))
         {
             return this.BadRequest(workflowManager.CreateWrongStepResponse());
         }
