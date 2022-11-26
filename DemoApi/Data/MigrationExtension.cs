@@ -14,7 +14,6 @@ public static class MigrationExtension
             return;
         }
 
-        context.Database.EnsureDeleted();
         context.Database.Migrate();
     }
 }
