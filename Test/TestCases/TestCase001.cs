@@ -5,7 +5,6 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Stio.WorkflowManager.DemoApi.Enums;
 using Stio.WorkflowManager.DemoApi.Models;
 using Stio.WorkflowManager.Test.TestCaseData;
 using Xunit.Abstractions;
@@ -14,7 +13,8 @@ using Xunit.Priority;
 namespace Stio.WorkflowManager.Test.TestCases;
 
 [TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
-public class TestCase001 : IClassFixture<DemoApp>, IClassFixture<TestCase001Data>
+[Collection("DemoApp")]
+public class TestCase001 : IClassFixture<TestCase001Data>
 {
     private readonly DemoApp demoApp;
     private readonly JsonSerializerOptions jsonOptions;
