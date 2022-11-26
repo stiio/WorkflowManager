@@ -1,0 +1,36 @@
+name: Build
+
+on:
+  push:
+    branches: [ release ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore -c Release
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal -c Release -f net6.0
+
+    - name: Pack
+      if: ${{ success() && !github.base_ref }}
+      working-directory: ./Core
+      run: |
+        dotnet pack --no-build --verbosity normal -c Release -o artifacts -p:NuspecFile=package.nuspec
+
+    - name: Push to NuGet
+      if: ${{ success() && !github.base_ref }}
+      working-directory: ./Core
+      run: dotnet nuget push artifacts/**.nupkg -s https://api.nuget.org/v3/index.json --api-key ${{secrets.NU_GET_API_KEY}}
