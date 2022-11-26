@@ -5,11 +5,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<RootNamespace>$(SolutionName.Replace(" ", "_")).$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-	<PackageId>$(SolutionName.Replace(" ", "_")).$(MSBuildProjectName.Replace(" ", "_"))</PackageId>
-	<Title>$(SolutionName.Replace(" ", "_")).$(MSBuildProjectName.Replace(" ", "_"))</Title>
-    <Version>1.0.0</Version>
-    <Authors>Stio</Authors>
-    <Product>$(SolutionName.Replace(" ", "_"))</Product>
   </PropertyGroup>
 
   <ItemGroup>
