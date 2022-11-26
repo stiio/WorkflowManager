@@ -94,7 +94,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
             throw new WorkflowManagerStepRequireDataException(step.StepKey);
         }
 
-        step.WorkflowStep = await this.workflowStepStore.Update(step.UpdateWorkflowStep());
+        await this.workflowStepStore.Update(step.UpdateWorkflowStep());
 
         return await this.PrivateNext(step);
     }
@@ -116,7 +116,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
 
         typedStep.Data = data;
 
-        typedStep.WorkflowStep = await this.workflowStepStore.Update(step.UpdateWorkflowStep());
+        await this.workflowStepStore.Update(step.UpdateWorkflowStep());
 
         return await this.PrivateNext(step);
     }
@@ -308,7 +308,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
                 meta.SetPayload(existsStep, payload);
             }
 
-            existsStep.WorkflowStep = await this.workflowStepStore.Update(existsStep.UpdateWorkflowStep());
+            await this.workflowStepStore.Update(existsStep.UpdateWorkflowStep());
 
             step = existsStep;
         }

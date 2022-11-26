@@ -22,20 +22,16 @@ public class WorkflowStepStore : IWorkflowStepStore<WorkflowStep>
         return workflowStep;
     }
 
-    public async Task<WorkflowStep> Update(WorkflowStep workflowStep)
+    public async Task Update(WorkflowStep workflowStep)
     {
         this.context.WorkflowSteps.Update(workflowStep);
         await context.SaveChangesAsync();
-
-        return workflowStep;
     }
 
-    public async Task<WorkflowStep[]> UpdateRange(WorkflowStep[] workflowSteps)
+    public async Task UpdateRange(WorkflowStep[] workflowSteps)
     {
         this.context.WorkflowSteps.UpdateRange(workflowSteps);
         await context.SaveChangesAsync();
-
-        return workflowSteps;
     }
 
     public async Task<WorkflowStep[]> ListStepsByWorkflowId(Guid workflowId)

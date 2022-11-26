@@ -6,9 +6,9 @@ public interface IWorkflowStepStore<TWorkflowStep> where TWorkflowStep : class, 
 {
     Task<TWorkflowStep> Create(TWorkflowStep workflowStep);
 
-    Task<TWorkflowStep> Update(TWorkflowStep workflowStep);
+    Task Update(TWorkflowStep workflowStep);
 
-    Task<TWorkflowStep[]> UpdateRange(TWorkflowStep[] workflowSteps);
+    Task UpdateRange(TWorkflowStep[] workflowSteps);
 
     Task<TWorkflowStep[]> ListStepsByWorkflowId(Guid workflowId);
 }
