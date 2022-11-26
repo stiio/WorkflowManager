@@ -32,7 +32,6 @@ public class TestCase001 : IClassFixture<TestCase001Data>
     [Fact, Priority(1)]
     public async Task Test_001_StartWorkflow()
     {
-        Assert.Fail("fail");
         var requestJson = this.testCase001Data.FirstBlockQuestion1Data.ToJson(this.jsonOptions);
 
         using var client = this.demoApp.CreateClient();
