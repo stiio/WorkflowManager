@@ -1,3 +1,5 @@
+[![https://www.nuget.org/packages/Stio.WorkflowManager](https://img.shields.io/nuget/v/Stio.WorkflowManager)](https://www.nuget.org/packages/Stio.WorkflowManager/)
+
 # WorkflowManager
 
 # Start
