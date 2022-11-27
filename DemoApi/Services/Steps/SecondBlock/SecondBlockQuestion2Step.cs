@@ -21,11 +21,11 @@ public class SecondBlockQuestion2Step : AppBaseStep<SecondBlockQuestion2Data>,
 
     public Task<NextStepResult> Next()
     {
-        return Task.FromResult(
-            NextStepResult.Create(Step.SecondBlockQuestion3.ToString(),
-            new SecondBlockQuestion3Payload()
-            {
-                SomeString = Guid.NewGuid().ToString(),
-            }));
+        var payload = new SecondBlockQuestion3Payload()
+        {
+            SomeString = Guid.NewGuid().ToString(),
+        };
+
+        return Task.FromResult(NextStepResult.Create(Step.SecondBlockQuestion3.ToString(), payload));
     }
 }

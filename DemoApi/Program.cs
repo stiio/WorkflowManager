@@ -76,4 +76,9 @@ void ConfigureEndpoints(IEndpointRouteBuilder app)
     app.MapControllers();
 }
 
-public partial class Program { }
+/// <summary>
+/// Program
+/// </summary>
+public partial class Program
+{
+}

@@ -5,8 +5,8 @@ namespace Stio.WorkflowManager.Core.Interfaces;
 /// <summary>
 /// IWorkflowManagerFactory
 /// </summary>
-/// <typeparam name="TWorkflow"></typeparam>
-/// <typeparam name="TWorkflowStep"></typeparam>
+/// <typeparam name="TWorkflow">Implementation of IWorkflow</typeparam>
+/// <typeparam name="TWorkflowStep">Implementation of IWorkflowStep</typeparam>
 public interface IWorkflowManagerFactory<TWorkflow, TWorkflowStep>
     where TWorkflow : class, IWorkflow
     where TWorkflowStep : class, IWorkflowStep

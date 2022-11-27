@@ -3,8 +3,12 @@
 /// <inheritdoc />
 public class WorkflowManagerException : Exception
 {
-    /// <inheritdoc />
-    public WorkflowManagerException(string message) : base(message)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WorkflowManagerException"/> class.
+    /// </summary>
+    /// <param name="message">Message</param>
+    public WorkflowManagerException(string message)
+        : base(message)
     {
     }
 }

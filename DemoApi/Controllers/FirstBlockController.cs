@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using Stio.WorkflowManager.Core;
+using Stio.WorkflowManager.Core.Models;
 using Stio.WorkflowManager.DemoApi.Data;
 using Stio.WorkflowManager.DemoApi.Data.Entities;
 using Stio.WorkflowManager.DemoApi.Extensions;
 using Stio.WorkflowManager.DemoApi.Models;
 using Stio.WorkflowManager.DemoApi.Services;
 using Stio.WorkflowManager.DemoApi.Services.Steps.FirstBlock;
-using Stio.WorkflowManager.Core;
-using Stio.WorkflowManager.Core.Models;
 
 namespace Stio.WorkflowManager.DemoApi.Controllers;
 
@@ -104,7 +104,7 @@ public class FirstBlockController : ControllerBase
         {
             return this.BadRequest(workflowManager.CreateWrongStepResponse());
         }
-        
+
         var nextStepKey = await workflowManager.Next(request);
 
         return nextStepKey.ToNextStepResponse(workflowId);

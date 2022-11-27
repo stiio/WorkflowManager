@@ -6,7 +6,8 @@ namespace Stio.WorkflowManager.Store.Repository;
 /// Workflow Step Store
 /// </summary>
 /// <typeparam name="TWorkflowStep">Implementation of IWorkflowStep</typeparam>
-public interface IWorkflowStepStore<TWorkflowStep> where TWorkflowStep : class, IWorkflowStep
+public interface IWorkflowStepStore<TWorkflowStep>
+    where TWorkflowStep : class, IWorkflowStep
 {
     /// <summary>
     /// Create workflow step

@@ -3,8 +3,11 @@
 /// <inheritdoc />
 public class WorkflowManagerNoStepsException : WorkflowManagerException
 {
-    /// <inheritdoc />
-    public WorkflowManagerNoStepsException() : base("Workflow no steps.")
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WorkflowManagerNoStepsException"/> class.
+    /// </summary>
+    public WorkflowManagerNoStepsException()
+        : base("Workflow no steps.")
     {
     }
 }

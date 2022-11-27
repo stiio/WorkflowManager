@@ -13,8 +13,8 @@ public static class ConfigureServices
     /// <summary>
     /// Register <see cref="IWorkflowManagerFactory{TWorkflow,TWorkflowStep}"/>
     /// </summary>
-    /// <param name="services"></param>
-    /// <param name="stepsAssemblyMarkerType"></param>
+    /// <param name="services">Service collection</param>
+    /// <param name="stepsAssemblyMarkerType">Type from assembly for scanning steps</param>
     /// <typeparam name="TWorkflow">Implementation of <see cref="IWorkflow"/></typeparam>
     /// <typeparam name="TWorkflowStep">Implementation of <see cref="IWorkflowStep"/></typeparam>
     /// <returns><see cref="IWorkflowManagerBuilder"/></returns>

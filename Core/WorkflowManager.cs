@@ -187,7 +187,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
     /// <summary>
     /// Call GetStepData from last step and brings the type to the specified one.
     /// </summary>
-    /// <typeparam name="TStepData"></typeparam>
+    /// <typeparam name="TStepData">Type of returned step data</typeparam>
     /// <returns></returns>
     /// <exception cref="WorkflowManagerNoStepsException"></exception>
     public async Task<TStepData> GetStepData<TStepData>()
@@ -376,7 +376,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
     /// <summary>
     /// Returns the first step that implements TCustomLogic
     /// </summary>
-    /// <typeparam name="TCustomLogic"></typeparam>
+    /// <typeparam name="TCustomLogic">Type of custom logic</typeparam>
     /// <returns>TCustomLogic or null</returns>
     public TCustomLogic? GetFirstCustomLogic<TCustomLogic>()
     {
@@ -386,7 +386,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
     /// <summary>
     /// Returns the last step that implements TCustomLogic
     /// </summary>
-    /// <typeparam name="TCustomLogic"></typeparam>
+    /// <typeparam name="TCustomLogic">Type of custom logic</typeparam>
     /// <returns>TCustomLogic or null</returns>
     public TCustomLogic? GetLastCustomLogic<TCustomLogic>()
     {
@@ -396,8 +396,8 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
     /// <summary>
     /// Returns the last step before specified stepKey that implements TCustomLogic
     /// </summary>
-    /// <param name="beforeStepKey"></param>
-    /// <typeparam name="TCustomLogic"></typeparam>
+    /// <param name="beforeStepKey">Before step key</param>
+    /// <typeparam name="TCustomLogic">Type of custom logic</typeparam>
     /// <returns>TCustomLogic or null</returns>
     public TCustomLogic? GetCustomLogicBefore<TCustomLogic>(StepKey beforeStepKey)
     {
@@ -410,7 +410,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
     /// <summary>
     /// Return array of steps that implements TCustomLogic
     /// </summary>
-    /// <typeparam name="TCustomLogic"></typeparam>
+    /// <typeparam name="TCustomLogic">Type of custom logic</typeparam>
     /// <returns></returns>
     public IEnumerable<TCustomLogic> ListCustomLogic<TCustomLogic>()
     {

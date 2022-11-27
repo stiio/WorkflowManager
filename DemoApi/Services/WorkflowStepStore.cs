@@ -25,13 +25,13 @@ public class WorkflowStepStore : IWorkflowStepStore<WorkflowStep>
     public async Task Update(WorkflowStep workflowStep)
     {
         this.context.WorkflowSteps.Update(workflowStep);
-        await context.SaveChangesAsync();
+        await this.context.SaveChangesAsync();
     }
 
     public async Task UpdateRange(WorkflowStep[] workflowSteps)
     {
         this.context.WorkflowSteps.UpdateRange(workflowSteps);
-        await context.SaveChangesAsync();
+        await this.context.SaveChangesAsync();
     }
 
     public async Task<WorkflowStep[]> ListStepsByWorkflowId(Guid workflowId)

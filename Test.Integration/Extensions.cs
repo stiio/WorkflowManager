@@ -2,7 +2,7 @@
 using Stio.WorkflowManager.DemoApi.Enums;
 using Stio.WorkflowManager.DemoApi.Models;
 
-namespace Stio.WorkflowManager.Test;
+namespace Stio.WorkflowManager.Test.Integration;
 
 public static class Extensions
 {

@@ -30,7 +30,7 @@ public class NextStepResult
         return new NextStepResult()
         {
             StepKey = StepKey.Create(step),
-            Payload = payload
+            Payload = payload,
         };
     }
 

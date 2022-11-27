@@ -44,8 +44,7 @@ public class SecondBlockQuestion1Step : AppBaseStep,
                     Name = relatedObject.Name,
                 })
                 .OrderBy(relatedObject => relatedObject.Name)
-                .ToArrayAsync()
-
+                .ToArrayAsync(),
         };
     }
 

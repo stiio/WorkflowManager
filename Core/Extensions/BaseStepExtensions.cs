@@ -12,7 +12,7 @@ internal static class BaseStepExtensions
     {
         var nextKey = StepKey.Create("Empty");
         var dictionary = steps.ToDictionary(step => step.PreviousStepKey ?? StepKey.Create("Empty"));
-        
+
         while (dictionary.TryGetValue(nextKey, out var nextStep))
         {
             nextKey = nextStep.StepKey;

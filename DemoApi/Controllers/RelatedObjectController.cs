@@ -52,7 +52,7 @@ public class RelatedObjectController : ControllerBase
     [HttpGet("{relatedObjectId}")]
     public async Task<ActionResult<RelatedObjectDto>> GetRelatedObject(Guid relatedObjectId)
     {
-        var relatedObject = await applicationDbContext.RelatedObjects.FindAsync(relatedObjectId);
+        var relatedObject = await this.applicationDbContext.RelatedObjects.FindAsync(relatedObjectId);
 
         if (relatedObject == null)
         {
@@ -75,7 +75,7 @@ public class RelatedObjectController : ControllerBase
     [HttpPost("{relatedObjectId}")]
     public async Task<ActionResult<RelatedObjectDto>> UpdateRelatedObject(Guid relatedObjectId, [Required] RelatedObjectUpdateRequest request)
     {
-        var relatedObject = await applicationDbContext.RelatedObjects.FindAsync(relatedObjectId);
+        var relatedObject = await this.applicationDbContext.RelatedObjects.FindAsync(relatedObjectId);
 
         if (relatedObject == null)
         {
@@ -103,7 +103,7 @@ public class RelatedObjectController : ControllerBase
     [HttpDelete("{relatedObjectId}")]
     public async Task<ActionResult> DeleteRelatedObject(Guid relatedObjectId)
     {
-        var relatedObject = await applicationDbContext.RelatedObjects.FindAsync(relatedObjectId);
+        var relatedObject = await this.applicationDbContext.RelatedObjects.FindAsync(relatedObjectId);
 
         if (relatedObject == null)
         {

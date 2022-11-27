@@ -36,6 +36,6 @@ public class SecondBlockFlowService
             return NextStepResult.Create(nextStepKey);
         }
 
-        return await thirdBlockFlowService.Start(workflowManager);
+        return await this.thirdBlockFlowService.Start(workflowManager);
     }
 }

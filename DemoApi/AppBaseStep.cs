@@ -1,6 +1,8 @@
 ﻿using Stio.WorkflowManager.Core.Models;
 using Stio.WorkflowManager.DemoApi.Data.Entities;
 
+#pragma warning disable SA1402 // File may only contain a single type
+
 namespace Stio.WorkflowManager.DemoApi;
 
 public abstract class AppBaseStep : BaseStep<Workflow, WorkflowStep>

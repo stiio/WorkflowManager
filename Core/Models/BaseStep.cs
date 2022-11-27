@@ -1,6 +1,8 @@
 ﻿using Stio.WorkflowManager.Core.Extensions;
 using Stio.WorkflowManager.Store.Entity;
 
+#pragma warning disable SA1402 // File may only contain a single type
+
 namespace Stio.WorkflowManager.Core.Models;
 
 /// <summary>
@@ -102,7 +104,7 @@ public abstract class BaseStep<TWorkflow, TWorkflowStep, TData, TPayload> : Base
     /// <summary>
     /// Payload of step
     /// </summary>
-    public TPayload? Payload;
+    public TPayload? Payload { get; set; }
 
     internal override TWorkflowStep UpdateWorkflowStep()
     {
