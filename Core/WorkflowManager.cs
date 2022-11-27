@@ -10,6 +10,11 @@ using Stio.WorkflowManager.Store.Repository;
 
 namespace Stio.WorkflowManager.Core;
 
+/// <summary>
+/// WorkflowManager
+/// </summary>
+/// <typeparam name="TWorkflow">Implementation of <see cref="IWorkflow"/></typeparam>
+/// <typeparam name="TWorkflowStep">Implementation of <see cref="IWorkflowStep"/></typeparam>
 public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
     where TWorkflow : class, IWorkflow
     where TWorkflowStep : class, IWorkflowStep
@@ -43,12 +48,29 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
             .ToList();
     }
 
+    /// <summary>
+    /// Id of related workflow
+    /// </summary>
     public Guid WorkflowId => this.Workflow.Id;
 
+    /// <summary>
+    /// Related workflow
+    /// </summary>
     public TWorkflow Workflow { get; private set; }
 
+    /// <summary>
+    /// Related workflow steps
+    /// </summary>
     public List<TWorkflowStep> WorkflowSteps { get; private set; }
 
+    /// <summary>
+    /// Start workflow with specified step
+    /// </summary>
+    /// <param name="relatedObjectId">Id of related object for step</param>
+    /// <param name="payload">Payload for step</param>
+    /// <typeparam name="TStep">Type of start step</typeparam>
+    /// <returns>Next <see cref="StepKey"/></returns>
+    /// <exception cref="WorkflowManagerAlreadyHaveStepsException"></exception>
     public async Task<StepKey> Start<TStep>(string? relatedObjectId = null, object? payload = null)
         where TStep : BaseStep<TWorkflow, TWorkflowStep>
     {
@@ -64,6 +86,16 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return await this.Next();
     }
 
+    /// <summary>
+    /// Start workflow with specified step with data
+    /// </summary>
+    /// <param name="data">Data of step</param>
+    /// <param name="relatedObjectId">Id of related object for step</param>
+    /// <param name="payload">Payload for step</param>
+    /// <typeparam name="TStep">Type of start step</typeparam>
+    /// <typeparam name="TData">Type of step data</typeparam>
+    /// <returns>Next <see cref="StepKey"/></returns>
+    /// <exception cref="WorkflowManagerAlreadyHaveStepsException"></exception>
     public async Task<StepKey> Start<TStep, TData>(TData data, string? relatedObjectId = null, object? payload = null)
         where TStep : BaseStep<TWorkflow, TWorkflowStep, TData>
         where TData : class
@@ -80,6 +112,13 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return await this.Next(data);
     }
 
+    /// <summary>
+    /// Call Next method (INextStep), than create next step
+    /// </summary>
+    /// <returns>Next <see cref="StepKey"/></returns>
+    /// <exception cref="WorkflowManagerNoStepsException"></exception>
+    /// <exception cref="WorkflowManagerStepRequireDataException"></exception>
+    /// <exception cref="WorkflowManagerNotImplementNextStepException"></exception>
     public async Task<StepKey> Next()
     {
         if (!this.HasSteps())
@@ -99,6 +138,15 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return await this.PrivateNext(step);
     }
 
+    /// <summary>
+    /// Save data to store, call Next method (INextStep), than create next step
+    /// </summary>
+    /// <param name="data">Data of step</param>
+    /// <typeparam name="TData">Data type of step</typeparam>
+    /// <returns>Next <see cref="StepKey"/></returns>
+    /// <exception cref="WorkflowManagerNoStepsException"></exception>
+    /// <exception cref="WorkflowManagerException"></exception>
+    /// <exception cref="WorkflowManagerNotImplementNextStepException"></exception>
     public async Task<StepKey> Next<TData>(TData data)
         where TData : class
     {
@@ -121,6 +169,11 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return await this.PrivateNext(step);
     }
 
+    /// <summary>
+    /// Call GetStepData from last step.
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="WorkflowManagerNoStepsException"></exception>
     public Task<object> GetStepData()
     {
         if (!this.HasSteps())
@@ -131,6 +184,12 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return this.GetLastStep().GetStepData();
     }
 
+    /// <summary>
+    /// Call GetStepData from last step and brings the type to the specified one.
+    /// </summary>
+    /// <typeparam name="TStepData"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="WorkflowManagerNoStepsException"></exception>
     public async Task<TStepData> GetStepData<TStepData>()
         where TStepData : class
     {
@@ -142,6 +201,12 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return (TStepData)(await this.GetLastStep().GetStepData());
     }
 
+    /// <summary>
+    /// Delete current step and return previous step key
+    /// </summary>
+    /// <returns>Previous <see cref="StepKey"/></returns>
+    /// <exception cref="WorkflowManagerNoStepsException"></exception>
+    /// <exception cref="WorkflowManagerPreviousStepException"></exception>
     public async Task<StepKey> GoToPreviousStep()
     {
         if (!this.HasSteps())
@@ -163,6 +228,13 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return previousStep.StepKey;
     }
 
+    /// <summary>
+    /// Delete steps after specified step and return <see cref="StepKey"/> of specified step.
+    /// </summary>
+    /// <param name="relatedObjectId">Id of related object for step</param>
+    /// <typeparam name="TStep">Step type</typeparam>
+    /// <returns>Next <see cref="StepKey"/></returns>
+    /// <exception cref="WorkflowManagerStepNotFoundException"></exception>
     public Task<StepKey> GoToStep<TStep>(string? relatedObjectId = null)
         where TStep : BaseStep<TWorkflow, TWorkflowStep>
     {
@@ -171,6 +243,12 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return this.GoToStep(stepKey);
     }
 
+    /// <summary>
+    /// Delete steps after specified step and return <see cref="StepKey"/> of specified step.
+    /// </summary>
+    /// <param name="stepKey">Target step key</param>
+    /// <returns>Next <see cref="StepKey"/></returns>
+    /// <exception cref="WorkflowManagerStepNotFoundException"></exception>
     public async Task<StepKey> GoToStep(StepKey stepKey)
     {
         var step = this.GetStep<BaseStep<TWorkflow, TWorkflowStep>>(stepKey);
@@ -184,6 +262,12 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return step.StepKey;
     }
 
+    /// <summary>
+    /// Get specified step
+    /// </summary>
+    /// <param name="relatedObjectId">Id of related object for step</param>
+    /// <typeparam name="TStep">Type of step</typeparam>
+    /// <returns>Step or null</returns>
     public TStep? GetStep<TStep>(string? relatedObjectId = null)
         where TStep : BaseStep<TWorkflow, TWorkflowStep>
     {
@@ -192,6 +276,12 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return this.GetStep<TStep>(stepKey);
     }
 
+    /// <summary>
+    /// Get step by specified step key and brings the type to the specified one.
+    /// </summary>
+    /// <param name="stepKey">Target step key</param>
+    /// <typeparam name="TStep">Type of step</typeparam>
+    /// <returns>Step or null</returns>
     public TStep? GetStep<TStep>(StepKey stepKey)
         where TStep : BaseStep<TWorkflow, TWorkflowStep>
     {
@@ -203,6 +293,11 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return null;
     }
 
+    /// <summary>
+    /// Return last step
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="WorkflowManagerNoStepsException"></exception>
     public BaseStep<TWorkflow, TWorkflowStep> GetLastStep()
     {
         if (!this.HasSteps())
@@ -213,31 +308,55 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return this.sortedSteps.Last();
     }
 
+    /// <summary>
+    /// Checks that the specified step is the last one.
+    /// </summary>
+    /// <param name="relatedObjectId">Id of related object for step</param>
+    /// <typeparam name="TStep">Target type of step</typeparam>
+    /// <returns></returns>
+    /// <exception cref="WorkflowManagerNoStepsException"></exception>
     public bool IsLastStep<TStep>(string? relatedObjectId = null)
         where TStep : BaseStep<TWorkflow, TWorkflowStep>
     {
-        if (!this.HasSteps())
-        {
-            throw new WorkflowManagerNoStepsException();
-        }
-        
         var targetStepKey = typeof(TStep).CreateStepKey(relatedObjectId);
 
         return this.IsLastStep(targetStepKey);
     }
 
+    /// <summary>
+    /// Checks that the specified step is the last one.
+    /// </summary>
+    /// <param name="stepKey">Target step key</param>
+    /// <returns></returns>
+    /// <exception cref="WorkflowManagerNoStepsException"></exception>
     public bool IsLastStep(StepKey stepKey)
     {
+        if (!this.HasSteps())
+        {
+            throw new WorkflowManagerNoStepsException();
+        }
+
         var lastStep = this.GetLastStep();
 
         return lastStep.StepKey == stepKey;
     }
 
+    /// <summary>
+    /// Checks whether the specified step exists in the workflow
+    /// </summary>
+    /// <param name="stepKey">Target step key</param>
+    /// <returns></returns>
     public bool HasStep(StepKey stepKey)
     {
         return this.activeSteps.ContainsKey(stepKey);
     }
 
+    /// <summary>
+    /// Checks whether the specified step exists in the workflow
+    /// </summary>
+    /// <param name="relatedObjectId">Id of related object for step</param>
+    /// <typeparam name="TStep">Target type of step</typeparam>
+    /// <returns></returns>
     public bool HasStep<TStep>(string? relatedObjectId = null)
     {
         var stepKey = typeof(TStep).CreateStepKey(relatedObjectId);
@@ -245,21 +364,41 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
         return this.HasStep(stepKey);
     }
 
+    /// <summary>
+    /// Checks if there are steps in the workflow
+    /// </summary>
+    /// <returns></returns>
     public bool HasSteps()
     {
         return this.sortedSteps.Any();
     }
 
+    /// <summary>
+    /// Returns the first step that implements TCustomLogic
+    /// </summary>
+    /// <typeparam name="TCustomLogic"></typeparam>
+    /// <returns>TCustomLogic or null</returns>
     public TCustomLogic? GetFirstCustomLogic<TCustomLogic>()
     {
         return this.sortedSteps.OfType<TCustomLogic>().FirstOrDefault();
     }
 
+    /// <summary>
+    /// Returns the last step that implements TCustomLogic
+    /// </summary>
+    /// <typeparam name="TCustomLogic"></typeparam>
+    /// <returns>TCustomLogic or null</returns>
     public TCustomLogic? GetLastCustomLogic<TCustomLogic>()
     {
         return this.sortedSteps.OfType<TCustomLogic>().LastOrDefault();
     }
 
+    /// <summary>
+    /// Returns the last step before specified stepKey that implements TCustomLogic
+    /// </summary>
+    /// <param name="beforeStepKey"></param>
+    /// <typeparam name="TCustomLogic"></typeparam>
+    /// <returns>TCustomLogic or null</returns>
     public TCustomLogic? GetCustomLogicBefore<TCustomLogic>(StepKey beforeStepKey)
     {
         return this.sortedSteps
@@ -268,6 +407,11 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
             .LastOrDefault();
     }
 
+    /// <summary>
+    /// Return array of steps that implements TCustomLogic
+    /// </summary>
+    /// <typeparam name="TCustomLogic"></typeparam>
+    /// <returns></returns>
     public IEnumerable<TCustomLogic> ListCustomLogic<TCustomLogic>()
     {
         return this.sortedSteps.OfType<TCustomLogic>();

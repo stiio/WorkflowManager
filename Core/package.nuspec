@@ -18,7 +18,9 @@
 	</metadata>
 	<files>
 		<file src="bin\Release\net6.0\Core.dll" target="lib\net6.0"/>
+		<file src="bin\Release\net6.0\Core.xml" target="lib\net6.0"/>
 		<file src="bin\Release\net6.0\Store.dll" target="lib\net6.0"/>
+		<file src="bin\Release\net6.0\Store.xml" target="lib\net6.0"/>
 		<file src="..\README.md" target="docs\" />
 	</files>
 </package>
