@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Stio.WorkflowManager.DemoApi.Models;
-using Stio.WorkflowManager.Test.TestCaseData;
+using Stio.WorkflowManager.Test.Integration.TestCaseData;
 using Xunit.Abstractions;
 using Xunit.Priority;
 
-namespace Stio.WorkflowManager.Test.TestCases;
+namespace Stio.WorkflowManager.Test.Integration.TestCases;
 
 [TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
 [Collection("DemoApp")]
@@ -29,7 +29,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.jsonOptions = demoApp.Services.GetRequiredService<IOptions<JsonOptions>>().Value.JsonSerializerOptions;
     }
 
-    [Fact, Priority(1)]
+    [Fact]
+    [Priority(1)]
     public async Task Test_001_StartWorkflow()
     {
         var requestJson = this.testCase001Data.FirstBlockQuestion1Data.ToJson(this.jsonOptions);
@@ -57,7 +58,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact, Priority(2)]
+    [Fact]
+    [Priority(2)]
     public async Task Test_002_GetFirstBlockSecondQuestion()
     {
         using var client = this.demoApp.CreateClient();
@@ -72,7 +74,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact, Priority(3)]
+    [Fact]
+    [Priority(3)]
     public async Task Test_003_GoToPreviousStep()
     {
         using var client = this.demoApp.CreateClient();
@@ -89,7 +92,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.testCase001Data.NextStepResponse = responseJson.FromJson<NextStepResponse>(this.jsonOptions);
     }
 
-    [Fact, Priority(4)]
+    [Fact]
+    [Priority(4)]
     public async Task Test_004_GetFirstBlockFirstQuestion()
     {
         using var client = this.demoApp.CreateClient();
@@ -110,7 +114,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Equal(this.testCase001Data.FirstBlockQuestion1Data.LastName, firstBlockQuestion1Response.LastName);
     }
 
-    [Fact, Priority(5)]
+    [Fact]
+    [Priority(5)]
     public async Task Test_005_EditFirstBlockFirstQuestion()
     {
         var requestJson = this.testCase001Data.FirstBlockQuestion1Data.ToJson(this.jsonOptions);
@@ -132,7 +137,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.testCase001Data.NextStepResponse = responseJson.FromJson<NextStepResponse>(this.jsonOptions);
     }
 
-    [Fact, Priority(6)]
+    [Fact]
+    [Priority(6)]
     public async Task Test_006_GetFirstBlockSecondQuestion()
     {
         using var client = this.demoApp.CreateClient();
@@ -147,7 +153,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact, Priority(7)]
+    [Fact]
+    [Priority(7)]
     public async Task Test_007_EditFirstBlockSecondQuestion()
     {
         var requestJson = this.testCase001Data.FirstBlockQuestion2Data.ToJson(this.jsonOptions);
@@ -169,7 +176,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.testCase001Data.NextStepResponse = responseJson.FromJson<NextStepResponse>(this.jsonOptions);
     }
 
-    [Fact, Priority(8)]
+    [Fact]
+    [Priority(8)]
     public async Task Test_008_GetSecondBlockFirstQuestion()
     {
         using var client = this.demoApp.CreateClient();
@@ -189,7 +197,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Empty(secondBlockFirstQuestionResponse.RelatedObjects);
     }
 
-    [Fact, Priority(9)]
+    [Fact]
+    [Priority(9)]
     public async Task Test_009_AddFirstRelatedObject()
     {
         var requestJson = new RelatedObjectCreateRequest()
@@ -217,7 +226,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.testCase001Data.RelatedObjects[0].Id = relatedObject!.Id;
     }
 
-    [Fact, Priority(10)]
+    [Fact]
+    [Priority(10)]
     public async Task Test_010_GetSecondBlockFirstQuestion()
     {
         using var client = this.demoApp.CreateClient();
@@ -237,8 +247,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Single(secondBlockFirstQuestionResponse.RelatedObjects);
     }
 
-
-    [Fact, Priority(11)]
+    [Fact]
+    [Priority(11)]
     public async Task Test_011_AddSecondRelatedObject()
     {
         var requestJson = new RelatedObjectCreateRequest()
@@ -266,7 +276,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.testCase001Data.RelatedObjects[1].Id = relatedObject!.Id;
     }
 
-    [Fact, Priority(12)]
+    [Fact]
+    [Priority(12)]
     public async Task Test_012_GetSecondBlockFirstQuestion()
     {
         using var client = this.demoApp.CreateClient();
@@ -286,7 +297,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Equal(2, secondBlockFirstQuestionResponse.RelatedObjects.Length);
     }
 
-    [Fact, Priority(13)]
+    [Fact]
+    [Priority(13)]
     public async Task Test_013_AddThirdRelatedObject()
     {
         var requestJson = new RelatedObjectCreateRequest()
@@ -314,7 +326,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.testCase001Data.RelatedObjects[2].Id = relatedObject!.Id;
     }
 
-    [Fact, Priority(14)]
+    [Fact]
+    [Priority(14)]
     public async Task Test_014_GetSecondBlockFirstQuestion()
     {
         using var client = this.demoApp.CreateClient();
@@ -334,7 +347,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Equal(3, secondBlockFirstQuestionResponse.RelatedObjects.Length);
     }
 
-    [Fact, Priority(15)]
+    [Fact]
+    [Priority(15)]
     public async Task Test_015_EditSecondBlockFirstQuestion()
     {
         using var client = this.demoApp.CreateClient();
@@ -351,7 +365,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.testCase001Data.NextStepResponse = responseJson.FromJson<NextStepResponse>(this.jsonOptions);
     }
 
-    [Fact, Priority(16)]
+    [Fact]
+    [Priority(16)]
     public async Task Test_016_GetSecondBlockSecondQuestion()
     {
         using var client = this.demoApp.CreateClient();
@@ -366,7 +381,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact, Priority(17)]
+    [Fact]
+    [Priority(17)]
     public async Task Test_017_EditSecondBlockSecondQuestion()
     {
         var requestJson = this.testCase001Data.SecondBlockQuestion2Data.ToJson(this.jsonOptions);
@@ -388,7 +404,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.testCase001Data.NextStepResponse = responseJson.FromJson<NextStepResponse>(this.jsonOptions);
     }
 
-    [Fact, Priority(18)]
+    [Fact]
+    [Priority(18)]
     public async Task Test_018_GetSecondBlockThirdQuestion()
     {
         using var client = this.demoApp.CreateClient();
@@ -403,7 +420,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact, Priority(19)]
+    [Fact]
+    [Priority(19)]
     public async Task Test_019_EditSecondBlockThirdQuestion()
     {
         var requestJson = this.testCase001Data.SecondBlockQuestion3Data.ToJson(this.jsonOptions);
@@ -425,7 +443,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.testCase001Data.NextStepResponse = responseJson.FromJson<NextStepResponse>(this.jsonOptions);
     }
 
-    [Fact, Priority(20)]
+    [Fact]
+    [Priority(20)]
     public async Task Test_020_GetSecondBlockFourthQuestion()
     {
         using var client = this.demoApp.CreateClient();
@@ -444,7 +463,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Equal(this.testCase001Data.RelatedObjects[0].Name, secondBlockQuestion4Response!.Name);
     }
 
-    [Fact, Priority(21)]
+    [Fact]
+    [Priority(21)]
     public async Task Test_021_EditSecondBlockFourthQuestion()
     {
         var requestJson = this.testCase001Data.SecondBlockQuestion4Data[0].ToJson(this.jsonOptions);
@@ -466,7 +486,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.testCase001Data.NextStepResponse = responseJson.FromJson<NextStepResponse>(this.jsonOptions);
     }
 
-    [Fact, Priority(22)]
+    [Fact]
+    [Priority(22)]
     public async Task Test_022_GetSecondBlockFourthQuestion()
     {
         using var client = this.demoApp.CreateClient();
@@ -485,7 +506,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Equal(this.testCase001Data.RelatedObjects[1].Name, secondBlockQuestion4Response!.Name);
     }
 
-    [Fact, Priority(23)]
+    [Fact]
+    [Priority(23)]
     public async Task Test_023_EditSecondBlockFourthQuestion()
     {
         var requestJson = this.testCase001Data.SecondBlockQuestion4Data[1].ToJson(this.jsonOptions);
@@ -507,7 +529,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.testCase001Data.NextStepResponse = responseJson.FromJson<NextStepResponse>(this.jsonOptions);
     }
 
-    [Fact, Priority(24)]
+    [Fact]
+    [Priority(24)]
     public async Task Test_024_GetSecondBlockFourthQuestion()
     {
         using var client = this.demoApp.CreateClient();
@@ -526,7 +549,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Equal(this.testCase001Data.RelatedObjects[2].Name, secondBlockQuestion4Response!.Name);
     }
 
-    [Fact, Priority(25)]
+    [Fact]
+    [Priority(25)]
     public async Task Test_025_EditSecondBlockFourthQuestion()
     {
         var requestJson = this.testCase001Data.SecondBlockQuestion4Data[2].ToJson(this.jsonOptions);
@@ -548,7 +572,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.testCase001Data.NextStepResponse = responseJson.FromJson<NextStepResponse>(this.jsonOptions);
     }
 
-    [Fact, Priority(26)]
+    [Fact]
+    [Priority(26)]
     public async Task Test_026_GetThirdBlockFirstQuestion()
     {
         using var client = this.demoApp.CreateClient();
@@ -567,7 +592,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Equal(3, thirdBlockQuestion1Response!.RelatedObjects.Length);
     }
 
-    [Fact, Priority(27)]
+    [Fact]
+    [Priority(27)]
     public async Task Test_027_EditThirdBlockFirstQuestion()
     {
         var requestJson = this.testCase001Data.ThirdBlockQuestion1Data.ToJson(this.jsonOptions);
@@ -589,7 +615,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.testCase001Data.NextStepResponse = responseJson.FromJson<NextStepResponse>(this.jsonOptions);
     }
 
-    [Fact, Priority(28)]
+    [Fact]
+    [Priority(28)]
     public async Task Test_028_GetThirdBlockSecondQuestion()
     {
         using var client = this.demoApp.CreateClient();
@@ -608,7 +635,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Equal(this.testCase001Data.RelatedObjects[0].Name, thirdBlockQuestion2Response!.Name);
     }
 
-    [Fact, Priority(29)]
+    [Fact]
+    [Priority(29)]
     public async Task Test_029_EditThirdBlockFirstQuestion()
     {
         var requestJson = this.testCase001Data.ThirdBlockQuestion2Data[0].ToJson(this.jsonOptions);
@@ -630,7 +658,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.testCase001Data.NextStepResponse = responseJson.FromJson<NextStepResponse>(this.jsonOptions);
     }
 
-    [Fact, Priority(30)]
+    [Fact]
+    [Priority(30)]
     public async Task Test_030_GetThirdBlockSecondQuestion()
     {
         using var client = this.demoApp.CreateClient();
@@ -649,7 +678,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Equal(this.testCase001Data.RelatedObjects[2].Name, thirdBlockQuestion2Response!.Name);
     }
 
-    [Fact, Priority(31)]
+    [Fact]
+    [Priority(31)]
     public async Task Test_031_EditThirdBlockFirstQuestion()
     {
         var requestJson = this.testCase001Data.ThirdBlockQuestion2Data[1].ToJson(this.jsonOptions);
@@ -671,7 +701,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.testCase001Data.NextStepResponse = responseJson.FromJson<NextStepResponse>(this.jsonOptions);
     }
 
-    [Fact, Priority(32)]
+    [Fact]
+    [Priority(32)]
     public async Task Test_032_GetReviewBlockReview()
     {
         using var client = this.demoApp.CreateClient();
@@ -686,7 +717,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact, Priority(33)]
+    [Fact]
+    [Priority(33)]
     public async Task Test_033_EditReviewBlockReview()
     {
         using var client = this.demoApp.CreateClient();
@@ -703,7 +735,8 @@ public class TestCase001 : IClassFixture<TestCase001Data>
         this.testCase001Data.NextStepResponse = responseJson.FromJson<NextStepResponse>(this.jsonOptions);
     }
 
-    [Fact, Priority(34)]
+    [Fact]
+    [Priority(34)]
     public async Task Test_034_GetReviewBlockCompleted()
     {
         using var client = this.demoApp.CreateClient();

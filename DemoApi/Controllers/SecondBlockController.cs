@@ -10,9 +10,9 @@ namespace Stio.WorkflowManager.DemoApi.Controllers;
 [Route("api/workflows/{workflowId}/second_block")]
 public class SecondBlockController : ControllerBase
 {
-    private readonly ICustomWorkflowManagerFactory workflowManagerFactory;
+    private readonly IAppWorkflowManagerFactory workflowManagerFactory;
 
-    public SecondBlockController(ICustomWorkflowManagerFactory workflowManagerFactory)
+    public SecondBlockController(IAppWorkflowManagerFactory workflowManagerFactory)
     {
         this.workflowManagerFactory = workflowManagerFactory;
     }

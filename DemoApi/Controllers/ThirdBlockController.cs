@@ -11,9 +11,9 @@ namespace Stio.WorkflowManager.DemoApi.Controllers;
 [Route("api/workflows/{workflowId}/third_block")]
 public class ThirdBlockController : ControllerBase
 {
-    private readonly ICustomWorkflowManagerFactory workflowManagerFactory;
+    private readonly IAppWorkflowManagerFactory workflowManagerFactory;
 
-    public ThirdBlockController(ICustomWorkflowManagerFactory workflowManagerFactory)
+    public ThirdBlockController(IAppWorkflowManagerFactory workflowManagerFactory)
     {
         this.workflowManagerFactory = workflowManagerFactory;
     }

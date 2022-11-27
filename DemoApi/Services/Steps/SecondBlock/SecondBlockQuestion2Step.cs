@@ -7,7 +7,7 @@ using Stio.WorkflowManager.DemoApi.Models;
 namespace Stio.WorkflowManager.DemoApi.Services.Steps.SecondBlock;
 
 [Step(nameof(Step.SecondBlockQuestion2))]
-public class SecondBlockQuestion2Step : CustomBaseStep<SecondBlockQuestion2Data>,
+public class SecondBlockQuestion2Step : AppBaseStep<SecondBlockQuestion2Data>,
     INextStep
 {
     public override Task<object> GetStepData()
@@ -21,11 +21,11 @@ public class SecondBlockQuestion2Step : CustomBaseStep<SecondBlockQuestion2Data>
 
     public Task<NextStepResult> Next()
     {
-        return Task.FromResult(
-            NextStepResult.Create(Step.SecondBlockQuestion3.ToString(),
-            new SecondBlockQuestion3Payload()
-            {
-                SomeString = Guid.NewGuid().ToString(),
-            }));
+        var payload = new SecondBlockQuestion3Payload()
+        {
+            SomeString = Guid.NewGuid().ToString(),
+        };
+
+        return Task.FromResult(NextStepResult.Create(Step.SecondBlockQuestion3.ToString(), payload));
     }
 }

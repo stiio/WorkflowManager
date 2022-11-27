@@ -2,7 +2,17 @@
 
 namespace Stio.WorkflowManager.Store.Repository;
 
-public interface IWorkflowStore<TWorkflow> where TWorkflow : class, IWorkflow
+/// <summary>
+/// Workflow Store
+/// </summary>
+/// <typeparam name="TWorkflow">Implementation of IWorkflow</typeparam>
+public interface IWorkflowStore<TWorkflow>
+    where TWorkflow : class, IWorkflow
 {
+    /// <summary>
+    /// Find workflow by id
+    /// </summary>
+    /// <param name="workflowId">Id of workflow</param>
+    /// <returns>Return the found workflow or null</returns>
     Task<TWorkflow?> FindById(Guid workflowId);
 }

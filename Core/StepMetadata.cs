@@ -18,8 +18,8 @@ internal class StepMetadata
         this.dataProperty = type.GetProperty("Data");
         this.payloadProperty = type.GetProperty("Payload");
 
-        this.DataType = dataProperty?.PropertyType;
-        this.PayloadType = payloadProperty?.PropertyType;
+        this.DataType = this.dataProperty?.PropertyType;
+        this.PayloadType = this.payloadProperty?.PropertyType;
     }
 
     public bool HasData => this.dataProperty is not null;

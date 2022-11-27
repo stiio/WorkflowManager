@@ -15,7 +15,7 @@ public class SecondBlockFlowService
         this.thirdBlockFlowService = thirdBlockFlowService;
     }
 
-    public Task<NextStepResult> CompleteSecondBlockQuestion1(CustomWorkflowManager workflowManager)
+    public Task<NextStepResult> CompleteSecondBlockQuestion1(AppWorkflowManager workflowManager)
     {
         var firstBlockCustomLogic = workflowManager.GetLastCustomLogic<IFirstBlockCustomLogic>()!;
 
@@ -27,7 +27,7 @@ public class SecondBlockFlowService
         return this.CompleteSecondBlockQuestion4(workflowManager);
     }
 
-    public async Task<NextStepResult> CompleteSecondBlockQuestion4(CustomWorkflowManager workflowManager)
+    public async Task<NextStepResult> CompleteSecondBlockQuestion4(AppWorkflowManager workflowManager)
     {
         var nextStepKey = await this.relatedObjectFlowService.GetNextStepKey(workflowManager, Step.SecondBlockQuestion4);
 
@@ -36,6 +36,6 @@ public class SecondBlockFlowService
             return NextStepResult.Create(nextStepKey);
         }
 
-        return await thirdBlockFlowService.Start(workflowManager);
+        return await this.thirdBlockFlowService.Start(workflowManager);
     }
 }

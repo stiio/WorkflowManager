@@ -7,7 +7,7 @@ using Stio.WorkflowManager.DemoApi.Models;
 namespace Stio.WorkflowManager.DemoApi.Services.Steps.FirstBlock;
 
 [Step(nameof(Step.FirstBlockQuestion1))]
-public class FirstBlockQuestion1Step : CustomBaseStep<FirstBlockQuestion1Data>,
+public class FirstBlockQuestion1Step : AppBaseStep<FirstBlockQuestion1Data>,
     INextStep
 {
     public override Task<object> GetStepData()

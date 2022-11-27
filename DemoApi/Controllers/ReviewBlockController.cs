@@ -9,9 +9,9 @@ namespace Stio.WorkflowManager.DemoApi.Controllers;
 [Route("api/workflows/{workflowId}/review_block")]
 public class ReviewBlockController : ControllerBase
 {
-    private readonly ICustomWorkflowManagerFactory workflowManagerFactory;
+    private readonly IAppWorkflowManagerFactory workflowManagerFactory;
 
-    public ReviewBlockController(ICustomWorkflowManagerFactory workflowManagerFactory)
+    public ReviewBlockController(IAppWorkflowManagerFactory workflowManagerFactory)
     {
         this.workflowManagerFactory = workflowManagerFactory;
     }

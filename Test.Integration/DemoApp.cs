@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Net.Mime;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Configurations;
@@ -12,11 +11,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Stio.WorkflowManager.DemoApi.Data;
 
-namespace Stio.WorkflowManager.Test;
+namespace Stio.WorkflowManager.Test.Integration;
 
 public class DemoApp : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly PostgreSqlTestcontainer postgreSqlTestcontainer = new TestcontainersBuilder<PostgreSqlTestcontainer>()
+    private readonly PostgreSqlTestcontainer postgreSqlTestContainer = new TestcontainersBuilder<PostgreSqlTestcontainer>()
         .WithDatabase(new PostgreSqlTestcontainerConfiguration()
         {
             Database = "sampleWorkflowManager",
@@ -27,6 +26,17 @@ public class DemoApp : WebApplicationFactory<Program>, IAsyncLifetime
         .WithAutoRemove(true)
         .WithImage("postgres:13.2")
         .Build();
+
+    public async Task InitializeAsync()
+    {
+        await this.postgreSqlTestContainer.StartAsync();
+    }
+
+    public new async Task DisposeAsync()
+    {
+        await this.postgreSqlTestContainer.DisposeAsync();
+        await base.DisposeAsync();
+    }
 
     protected override void ConfigureClient(HttpClient client)
     {
@@ -43,19 +53,8 @@ public class DemoApp : WebApplicationFactory<Program>, IAsyncLifetime
 
             services.AddDbContext<ApplicationDbContext>(opts =>
             {
-                opts.UseNpgsql(this.postgreSqlTestcontainer.ConnectionString);
+                opts.UseNpgsql(this.postgreSqlTestContainer.ConnectionString);
             });
         });
-    }
-
-    public async Task InitializeAsync()
-    {
-        await this.postgreSqlTestcontainer.StartAsync();
-    }
-
-    public new async Task DisposeAsync()
-    {
-        await this.postgreSqlTestcontainer.DisposeAsync();
-        await base.DisposeAsync();
     }
 }

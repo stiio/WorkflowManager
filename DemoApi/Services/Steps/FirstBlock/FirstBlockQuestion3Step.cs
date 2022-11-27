@@ -8,7 +8,7 @@ using Stio.WorkflowManager.DemoApi.Services.CustomLogic;
 namespace Stio.WorkflowManager.DemoApi.Services.Steps.FirstBlock;
 
 [Step(nameof(Step.FirstBlockQuestion3))]
-public class FirstBlockQuestion3Step : CustomBaseStep<FirstBlockQuestion3Data>,
+public class FirstBlockQuestion3Step : AppBaseStep<FirstBlockQuestion3Data>,
     INextStep,
     IFirstBlockCustomLogic
 {

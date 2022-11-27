@@ -21,14 +21,16 @@ internal class WorkflowManagerBuilder : IWorkflowManagerBuilder
         this.services = services;
     }
 
-    public IWorkflowManagerBuilder AddWorkflowStore<TWorkflowStore>() where TWorkflowStore : class
+    public IWorkflowManagerBuilder AddWorkflowStore<TWorkflowStore>()
+        where TWorkflowStore : class
     {
         this.services.TryAddScoped(typeof(IWorkflowStore<>).MakeGenericType(this.workflowType), typeof(TWorkflowStore));
 
         return this;
     }
 
-    public IWorkflowManagerBuilder AddWorkflowStepStore<TWorkflowStepStore>() where TWorkflowStepStore : class
+    public IWorkflowManagerBuilder AddWorkflowStepStore<TWorkflowStepStore>()
+        where TWorkflowStepStore : class
     {
         this.services.TryAddScoped(typeof(IWorkflowStepStore<>).MakeGenericType(this.workflowStepType), typeof(TWorkflowStepStore));
 

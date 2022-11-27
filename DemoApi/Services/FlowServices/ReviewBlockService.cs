@@ -14,12 +14,12 @@ public class ReviewBlockService
         this.applicationDbContext = applicationDbContext;
     }
 
-    public Task<NextStepResult> Start(CustomWorkflowManager workflowManager)
+    public Task<NextStepResult> Start(AppWorkflowManager workflowManager)
     {
         return Task.FromResult(NextStepResult.Create(Step.Review.ToString()));
     }
 
-    public Task<ReviewResponse> CreateReviewResponse(CustomWorkflowManager workflowManager)
+    public Task<ReviewResponse> CreateReviewResponse(AppWorkflowManager workflowManager)
     {
         return Task.FromResult(new ReviewResponse());
     }

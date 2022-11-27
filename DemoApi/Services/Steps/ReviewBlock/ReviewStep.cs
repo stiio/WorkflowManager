@@ -7,7 +7,7 @@ using Stio.WorkflowManager.DemoApi.Services.FlowServices;
 namespace Stio.WorkflowManager.DemoApi.Services.Steps.ReviewBlock;
 
 [Step(nameof(Step.Review))]
-public class ReviewStep : CustomBaseStep,
+public class ReviewStep : AppBaseStep,
     INextStep
 {
     private readonly ReviewBlockService reviewBlockService;

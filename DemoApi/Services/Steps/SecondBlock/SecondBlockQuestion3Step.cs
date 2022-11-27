@@ -8,7 +8,7 @@ using Stio.WorkflowManager.DemoApi.Services.FlowServices;
 namespace Stio.WorkflowManager.DemoApi.Services.Steps.SecondBlock;
 
 [Step(nameof(Step.SecondBlockQuestion3))]
-public class SecondBlockQuestion3Step : CustomBaseStep<SecondBlockQuestion3Data, SecondBlockQuestion3Payload>,
+public class SecondBlockQuestion3Step : AppBaseStep<SecondBlockQuestion3Data, SecondBlockQuestion3Payload>,
     INextStep
 {
     private readonly SecondBlockFlowService secondBlockFlowService;

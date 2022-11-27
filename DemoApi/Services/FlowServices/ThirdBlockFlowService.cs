@@ -22,7 +22,7 @@ public class ThirdBlockFlowService
         this.relatedObjectFlowService = relatedObjectFlowService;
     }
 
-    public async Task<NextStepResult> Start(CustomWorkflowManager workflowManager)
+    public async Task<NextStepResult> Start(AppWorkflowManager workflowManager)
     {
         var hasRelatedObjects = await this.applicationDbContext.RelatedObjects
             .AnyAsync(relatedObject => relatedObject.WorkflowId == workflowManager.Workflow.Id);
@@ -35,7 +35,7 @@ public class ThirdBlockFlowService
         return await this.reviewBlockService.Start(workflowManager);
     }
 
-    public async Task<NextStepResult> CompleteThirdBlockQuestion2(CustomWorkflowManager workflowManager)
+    public async Task<NextStepResult> CompleteThirdBlockQuestion2(AppWorkflowManager workflowManager)
     {
         var relatedObjects = await this.applicationDbContext.RelatedObjects.Where(relatedObject =>
             relatedObject.WorkflowId == workflowManager.Workflow.Id)

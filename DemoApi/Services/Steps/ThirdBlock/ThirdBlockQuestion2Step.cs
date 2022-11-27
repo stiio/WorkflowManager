@@ -9,7 +9,7 @@ using Stio.WorkflowManager.DemoApi.Services.FlowServices;
 namespace Stio.WorkflowManager.DemoApi.Services.Steps.ThirdBlock;
 
 [Step(nameof(Step.ThirdBlockQuestion2))]
-public class ThirdBlockQuestion2Step : CustomBaseStep<ThirdBlockQuestion2Data>,
+public class ThirdBlockQuestion2Step : AppBaseStep<ThirdBlockQuestion2Data>,
     INextStep
 {
     private readonly ApplicationDbContext applicationDbContext;

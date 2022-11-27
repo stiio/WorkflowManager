@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using Stio.WorkflowManager.Core.Interfaces;
 using Stio.WorkflowManager.DemoApi.Data;
 using Stio.WorkflowManager.DemoApi.Data.Entities;
 using Stio.WorkflowManager.DemoApi.Extensions;
@@ -14,11 +13,11 @@ namespace Stio.WorkflowManager.DemoApi.Controllers;
 public class RelatedObjectController : ControllerBase
 {
     private readonly ApplicationDbContext applicationDbContext;
-    private readonly IWorkflowManagerFactory<Workflow, WorkflowStep> workflowManagerFactory;
+    private readonly IAppWorkflowManagerFactory workflowManagerFactory;
 
     public RelatedObjectController(
         ApplicationDbContext applicationDbContext,
-        IWorkflowManagerFactory<Workflow, WorkflowStep> workflowManagerFactory)
+        IAppWorkflowManagerFactory workflowManagerFactory)
     {
         this.applicationDbContext = applicationDbContext;
         this.workflowManagerFactory = workflowManagerFactory;
@@ -53,7 +52,7 @@ public class RelatedObjectController : ControllerBase
     [HttpGet("{relatedObjectId}")]
     public async Task<ActionResult<RelatedObjectDto>> GetRelatedObject(Guid relatedObjectId)
     {
-        var relatedObject = await applicationDbContext.RelatedObjects.FindAsync(relatedObjectId);
+        var relatedObject = await this.applicationDbContext.RelatedObjects.FindAsync(relatedObjectId);
 
         if (relatedObject == null)
         {
@@ -76,7 +75,7 @@ public class RelatedObjectController : ControllerBase
     [HttpPost("{relatedObjectId}")]
     public async Task<ActionResult<RelatedObjectDto>> UpdateRelatedObject(Guid relatedObjectId, [Required] RelatedObjectUpdateRequest request)
     {
-        var relatedObject = await applicationDbContext.RelatedObjects.FindAsync(relatedObjectId);
+        var relatedObject = await this.applicationDbContext.RelatedObjects.FindAsync(relatedObjectId);
 
         if (relatedObject == null)
         {
@@ -104,7 +103,7 @@ public class RelatedObjectController : ControllerBase
     [HttpDelete("{relatedObjectId}")]
     public async Task<ActionResult> DeleteRelatedObject(Guid relatedObjectId)
     {
-        var relatedObject = await applicationDbContext.RelatedObjects.FindAsync(relatedObjectId);
+        var relatedObject = await this.applicationDbContext.RelatedObjects.FindAsync(relatedObjectId);
 
         if (relatedObject == null)
         {

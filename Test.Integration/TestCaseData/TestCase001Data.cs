@@ -1,6 +1,6 @@
 ﻿using Stio.WorkflowManager.DemoApi.Models;
 
-namespace Stio.WorkflowManager.Test.TestCaseData;
+namespace Stio.WorkflowManager.Test.Integration.TestCaseData;
 
 public class TestCase001Data
 {
@@ -24,7 +24,7 @@ public class TestCase001Data
         Amount = 501,
     };
 
-    public RelatedObjectDto[] RelatedObjects = new RelatedObjectDto[]
+    public RelatedObjectDto[] RelatedObjects { get; set; } = new RelatedObjectDto[]
     {
         new RelatedObjectDto()
         {
@@ -74,7 +74,7 @@ public class TestCase001Data
 
     public ThirdBlockQuestion1Data ThirdBlockQuestion1Data => new ThirdBlockQuestion1Data()
     {
-        CheckedIds = new Guid[] { this.RelatedObjects[0].Id, this.RelatedObjects[2].Id }
+        CheckedIds = new Guid[] { this.RelatedObjects[0].Id, this.RelatedObjects[2].Id },
     };
 
     public ThirdBlockQuestion2Data[] ThirdBlockQuestion2Data => new ThirdBlockQuestion2Data[]
