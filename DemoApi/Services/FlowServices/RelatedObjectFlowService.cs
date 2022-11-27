@@ -14,7 +14,7 @@ public class RelatedObjectFlowService
         this.applicationDbContext = applicationDbContext;
     }
 
-    public async Task<StepKey?> GetNextStepKey(CustomWorkflowManager workflowManager, Step step)
+    public async Task<StepKey?> GetNextStepKey(AppWorkflowManager workflowManager, Step step)
     {
         var relatedObjects = await this.applicationDbContext.RelatedObjects
             .Where(relatedObject => relatedObject.WorkflowId == workflowManager.Workflow.Id)
@@ -26,7 +26,7 @@ public class RelatedObjectFlowService
             .FirstOrDefault(stepKey => !workflowManager.HasStep(stepKey));
     }
 
-    public StepKey? GetNextKey(CustomWorkflowManager workflowManager, StepKey[] stepKeys)
+    public StepKey? GetNextKey(AppWorkflowManager workflowManager, StepKey[] stepKeys)
     {
         return stepKeys.FirstOrDefault(k => !workflowManager.HasStep(k));
     }

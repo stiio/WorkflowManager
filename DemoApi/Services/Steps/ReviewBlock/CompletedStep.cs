@@ -5,7 +5,7 @@ using Stio.WorkflowManager.DemoApi.Models;
 namespace Stio.WorkflowManager.DemoApi.Services.Steps.ReviewBlock;
 
 [Step(nameof(Step.Completed))]
-public class CompletedStep : CustomBaseStep
+public class CompletedStep : AppBaseStep
 {
     public override Task<object> GetStepData()
     {

@@ -7,7 +7,7 @@ using Stio.WorkflowManager.DemoApi.Models;
 namespace Stio.WorkflowManager.DemoApi.Services.Steps.SecondBlock;
 
 [Step(nameof(Step.SecondBlockQuestion2))]
-public class SecondBlockQuestion2Step : CustomBaseStep<SecondBlockQuestion2Data>,
+public class SecondBlockQuestion2Step : AppBaseStep<SecondBlockQuestion2Data>,
     INextStep
 {
     public override Task<object> GetStepData()

@@ -15,12 +15,12 @@ namespace Stio.WorkflowManager.DemoApi.Controllers;
 [Route("api/workflows/{workflowId}/first_block")]
 public class FirstBlockController : ControllerBase
 {
-    private readonly ICustomWorkflowManagerFactory workflowManagerFactory;
+    private readonly IAppWorkflowManagerFactory workflowManagerFactory;
     private readonly ApplicationDbContext applicationDbContext;
     private readonly UserService userService;
 
     public FirstBlockController(
-        ICustomWorkflowManagerFactory workflowManagerFactory,
+        IAppWorkflowManagerFactory workflowManagerFactory,
         ApplicationDbContext applicationDbContext,
         UserService userService)
     {

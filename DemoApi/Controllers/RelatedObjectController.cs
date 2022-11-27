@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using Stio.WorkflowManager.Core.Interfaces;
 using Stio.WorkflowManager.DemoApi.Data;
 using Stio.WorkflowManager.DemoApi.Data.Entities;
 using Stio.WorkflowManager.DemoApi.Extensions;
@@ -14,11 +13,11 @@ namespace Stio.WorkflowManager.DemoApi.Controllers;
 public class RelatedObjectController : ControllerBase
 {
     private readonly ApplicationDbContext applicationDbContext;
-    private readonly IWorkflowManagerFactory<Workflow, WorkflowStep> workflowManagerFactory;
+    private readonly IAppWorkflowManagerFactory workflowManagerFactory;
 
     public RelatedObjectController(
         ApplicationDbContext applicationDbContext,
-        IWorkflowManagerFactory<Workflow, WorkflowStep> workflowManagerFactory)
+        IAppWorkflowManagerFactory workflowManagerFactory)
     {
         this.applicationDbContext = applicationDbContext;
         this.workflowManagerFactory = workflowManagerFactory;

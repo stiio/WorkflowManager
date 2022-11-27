@@ -11,7 +11,7 @@ using Stio.WorkflowManager.DemoApi.Services.Steps.FirstBlock;
 namespace Stio.WorkflowManager.DemoApi.Services.Steps.SecondBlock;
 
 [Step(nameof(Step.SecondBlockQuestion1))]
-public class SecondBlockQuestion1Step : CustomBaseStep,
+public class SecondBlockQuestion1Step : AppBaseStep,
     INextStep
 {
     private readonly UserService userService;

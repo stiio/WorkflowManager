@@ -9,9 +9,9 @@ namespace Stio.WorkflowManager.DemoApi.Controllers;
 [ApiController]
 public class WorkflowController : ControllerBase
 {
-    private readonly ICustomWorkflowManagerFactory workflowManagerFactory;
+    private readonly IAppWorkflowManagerFactory workflowManagerFactory;
 
-    public WorkflowController(ICustomWorkflowManagerFactory workflowManagerFactory)
+    public WorkflowController(IAppWorkflowManagerFactory workflowManagerFactory)
     {
         this.workflowManagerFactory = workflowManagerFactory;
     }
