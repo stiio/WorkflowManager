@@ -127,7 +127,7 @@ services.AddWorkflowManager<Workflow, WorkflowStep>(typeof(Program))
 </details>
 
 <details>
-<summary>3. Create steps:</summary>
+<summary>4. Create steps:</summary>
 
 StepAttribute - the unique identifier of the step. Required attribute.  
 The step must be inherited from:
@@ -177,7 +177,7 @@ public class FirstBlockQuestion2Step : BaseStep<Workflow, WorkflowStep, FirstBlo
 </details>
 
 <details>
-<summary>4. Usage</summary>
+<summary>5. Usage</summary>
 
 ```csharp
 [ApiController]
