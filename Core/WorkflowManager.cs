@@ -81,9 +81,9 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
 
         var stepKey = typeof(TStep).CreateStepKey(relatedObjectId);
 
-        await this.CreateNextStep(stepKey, null, payload);
+        await this.CreateNextStep(stepKey, null, payload).ConfigureAwait(false);
 
-        return await this.Next();
+        return await this.Next().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -107,9 +107,9 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
 
         var stepKey = typeof(TStep).CreateStepKey(relatedObjectId);
 
-        await this.CreateNextStep(stepKey, null, payload);
+        await this.CreateNextStep(stepKey, null, payload).ConfigureAwait(false);
 
-        return await this.Next(data);
+        return await this.Next(data).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -133,9 +133,9 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
             throw new WorkflowManagerStepRequireDataException(step.StepKey);
         }
 
-        await this.workflowStepStore.Update(step.UpdateWorkflowStep());
+        await this.workflowStepStore.Update(step.UpdateWorkflowStep()).ConfigureAwait(false);
 
-        return await this.PrivateNext(step);
+        return await this.PrivateNext(step).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -164,9 +164,9 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
 
         typedStep.Data = data;
 
-        await this.workflowStepStore.Update(step.UpdateWorkflowStep());
+        await this.workflowStepStore.Update(step.UpdateWorkflowStep()).ConfigureAwait(false);
 
-        return await this.PrivateNext(step);
+        return await this.PrivateNext(step).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -198,7 +198,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
             throw new WorkflowManagerNoStepsException();
         }
 
-        return (TStepData)(await this.GetLastStep().GetStepData());
+        return (TStepData)(await this.GetLastStep().GetStepData().ConfigureAwait(false));
     }
 
     /// <summary>
@@ -223,7 +223,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
 
         var previousStep = this.activeSteps[step.PreviousStepKey];
 
-        await this.DeleteStepsAfter(previousStep);
+        await this.DeleteStepsAfter(previousStep).ConfigureAwait(false);
 
         return previousStep.StepKey;
     }
@@ -257,7 +257,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
             throw new WorkflowManagerStepNotFoundException(stepKey);
         }
 
-        await this.DeleteStepsAfter(step);
+        await this.DeleteStepsAfter(step).ConfigureAwait(false);
 
         return step.StepKey;
     }
@@ -424,9 +424,9 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
             throw new WorkflowManagerNotImplementNextStepException(step.GetType());
         }
 
-        var nextStepResult = await nextStep.Next();
+        var nextStepResult = await nextStep.Next().ConfigureAwait(false);
 
-        await this.CreateNextStep(nextStepResult.StepKey, step.StepKey, nextStepResult.Payload);
+        await this.CreateNextStep(nextStepResult.StepKey, step.StepKey, nextStepResult.Payload).ConfigureAwait(false);
 
         return nextStepResult.StepKey;
     }
@@ -452,7 +452,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
                 meta.SetPayload(existsStep, payload);
             }
 
-            await this.workflowStepStore.Update(existsStep.UpdateWorkflowStep());
+            await this.workflowStepStore.Update(existsStep.UpdateWorkflowStep()).ConfigureAwait(false);
 
             step = existsStep;
         }
@@ -470,7 +470,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
                 meta.SetPayload(newStep, payload);
             }
 
-            newStep.WorkflowStep = await this.workflowStepStore.Create(newStep.UpdateWorkflowStep());
+            newStep.WorkflowStep = await this.workflowStepStore.Create(newStep.UpdateWorkflowStep()).ConfigureAwait(false);
             this.WorkflowSteps.Add(newStep.WorkflowStep);
 
             step = newStep;
@@ -494,7 +494,7 @@ public sealed class WorkflowManager<TWorkflow, TWorkflowStep>
             workflowStep.IsSoftDelete = true;
         }
 
-        await this.workflowStepStore.UpdateRange(workflowSteps);
+        await this.workflowStepStore.UpdateRange(workflowSteps).ConfigureAwait(false);
 
         foreach (var deletedStep in deletedSteps)
         {

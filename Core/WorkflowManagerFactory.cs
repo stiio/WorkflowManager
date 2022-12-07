@@ -25,14 +25,14 @@ internal class WorkflowManagerFactory<TWorkflow, TWorkflowStep> : IWorkflowManag
 
     public async Task<WorkflowManager<TWorkflow, TWorkflowStep>> CreateWorkflowManager(Guid workflowId)
     {
-        var workflow = await this.workflowStore.FindById(workflowId);
+        var workflow = await this.workflowStore.FindById(workflowId).ConfigureAwait(false);
 
         if (workflow == null)
         {
             throw new WorkflowManagerException($"Workflow {workflowId} not found");
         }
 
-        var steps = await this.workflowStepStore.ListStepsByWorkflowId(workflowId);
+        var steps = await this.workflowStepStore.ListStepsByWorkflowId(workflowId).ConfigureAwait(false);
 
         return new WorkflowManager<TWorkflow, TWorkflowStep>(workflow, steps.ToList(), this.services);
     }
